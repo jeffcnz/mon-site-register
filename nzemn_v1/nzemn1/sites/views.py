@@ -4,10 +4,10 @@ from django.shortcuts import get_object_or_404, render
 from .models import Site
 
 
-def index(request):
+def siteList(request):
     site_list = Site.objects.order_by('site_name')
     context = {'site_list': site_list,}
-    return render(request, 'sites/index.html', context)
+    return render(request, 'sites/siteList.html', context)
 
 
 def site(request, site_id):
