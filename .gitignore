@@ -1,0 +1,7 @@
+/django_tutorial_1
+/django_t1_venv
+/django-docker
+*.md
+**/venv
+*.sqlite3
+**/__pycache__
