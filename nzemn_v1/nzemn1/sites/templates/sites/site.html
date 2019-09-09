@@ -1,4 +1,27 @@
-<h1>{{ site.site_name }}</h1>
-<ul>
+{% extends 'base.html' %}
 
-</ul>
+  {% block title %}{{ site.site_name }}{% endblock title %}
+
+  {% block content %}
+  <div class="row">
+    <div class="col-sm">
+      <h1>{{ site.site_name }}</h1>
+    </div>
+  </div>
+  <div class="row">
+    <div class="col-sm">
+
+        <table class="table">
+          
+          <tr>
+            <td>Site Info</td>
+          </tr>
+
+        </table>
+
+    </div>
+
+  </div>
+
+
+  {% endblock content %}
