@@ -1,8 +1,9 @@
-from django.db import models
-
+#from django.db import models
+from django.contrib.gis.db import models
 
 class Site(models.Model):
     site_name = models.CharField(max_length=200)
+    location = models.PointField('site location', null=True, blank=True)
     # need to add a feature of interest, but how define???
     def __str__(self):
         return self.site_name
