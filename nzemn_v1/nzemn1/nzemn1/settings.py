@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django.contrib.gis',
     'sites',
+    'leaflet',
 ]
 
 MIDDLEWARE = [
@@ -71,7 +72,7 @@ ROOT_URLCONF = 'nzemn1.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASE_DIR, 'nzemn1/templates')],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -145,3 +146,13 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+
+# Leaflet Configurations
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (-41.2706, 173.2840),
+    'DEFAULT_ZOOM': 5,
+    'MAX_ZOOM': 20,
+    'MIN_ZOOM':3,
+    'SCALE': 'both',
+    'ATTRIBUTION_PREFIX': 'Inspired by Life in GIS'
+}
