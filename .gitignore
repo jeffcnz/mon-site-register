@@ -7,3 +7,7 @@
 **/__pycache__
 **/secrets.json
 **/db.json
+
+# Exceptions
+!setup.md
+!README.md
