@@ -10,17 +10,17 @@ from .models import Site, Agency, IdentifierType, SiteAgency, SiteOperation, Sit
 
 #from leaflet.admin import LeafletGeoAdmin
 
-class OperationInline(admin.StackedInline):
+class OperationInline(admin.TabularInline):
     model = SiteOperation
     extra = 0
 
 
-class AgenciesInline(admin.StackedInline):
+class AgenciesInline(admin.TabularInline):
     model = SiteAgency
     extra = 0
 
 
-class IdentifiersInline(admin.StackedInline):
+class IdentifiersInline(admin.TabularInline):
     model = SiteIdentifiers
     extra = 0
 
