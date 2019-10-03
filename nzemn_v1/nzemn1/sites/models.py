@@ -28,15 +28,21 @@ class SiteAgency(models.Model):
     agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
     from_date = models.DateField('agency from date')
     to_date = models.DateField('agency to date', null=True, blank=True)
+    def __str__(self):
+        return self.site_agency
 
 
 class SiteOperation(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     from_date = models.DateField('operational from date')
     to_date = models.DateField('operational to date', null=True, blank=True)
+    def __str__(self):
+        return self.site_operation
 
 
 class SiteIdentifiers(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE)
     identifier_type = models.ForeignKey(IdentifierType, on_delete=models.CASCADE)
     identifier = models.CharField(max_length=200)
+    def __str__(self):
+        return self.site_identifier

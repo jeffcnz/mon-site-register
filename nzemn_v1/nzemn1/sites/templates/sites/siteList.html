@@ -7,9 +7,14 @@
     <div class="col-sm">
       {% if site_list %}
         <table class="table">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+          </tr>
           {% for site in site_list %}
           <tr>
-            <td><a href="/sites/id/{{ site.id }}/">{{ site.site_name }}</a></td>
+            <td><a href="/sites/id/{{ site.id }}/">{{ site.id }}</a></td>
+            <td>{{ site.site_name }}</td>
           </tr>
           {% endfor %}
         </table>

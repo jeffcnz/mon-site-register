@@ -1,7 +1,7 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 
-from .models import Site
+from .models import Site, SiteAgency, SiteOperation, SiteIdentifiers
 
 
 def siteList(request):
@@ -13,4 +13,11 @@ def siteList(request):
 def site(request, site_id):
     #return HttpResponse("You're looking at site %s." % site_id)
     site = get_object_or_404(Site, pk=site_id)
-    return render(request, 'sites/site.html', {'site': site})
+    site_agency = SiteAgency.objects.filter(site=site.id)
+    site_operation = SiteOperation.objects.filter(site=site.id)
+    site_identifier = SiteIdentifiers.objects.filter(site=site.id)
+    return render(request, 'sites/site.html', {'site': site,
+                                               'site_agency':site_agency,
+                                               'site_operation':site_operation,
+                                               'site_identifier':site_identifier
+                                               })

@@ -12,10 +12,61 @@
     <div class="col-sm">
 
         <table class="table">
-          
           <tr>
-            <td>Site Info</td>
+            <td>Name</td>
+            <td>{{site.site_name}}</td>
           </tr>
+          <tr>
+            <td>ID</td>
+            <td>{{site.id}}</td>
+          </tr>
+          <tr>
+            <td>Location</td>
+            <td>{{site.location}}</td>
+          </tr>
+        </table>
+        <h3>Operator</h3>
+        <table class="table">
+          <tr>
+            <th>Agency</th>
+            <th>From</th>
+            <th>To</th>
+          </tr>
+          {% for agency in site_agency.all %}
+          <tr>
+            <td>{{agency.agency}}</td>
+            <td>{{agency.from_date}}</td>
+            <td>{{agency.to_date}}</td>
+          </tr>
+          {% endfor%}
+
+        </table>
+        <h3>Operational History</h3>
+        <table class="table">
+          <tr>
+            <th>From</th>
+            <th>To</th>
+          </tr>
+          {% for period in site_operation.all %}
+          <tr>
+            <td>{{period.from_date}}</td>
+            <td>{{period.to_date}}</td>
+          </tr>
+          {% endfor%}
+
+        </table>
+        <h3>Other Identifiers</h3>
+        <table class="table">
+          <tr>
+            <th>Type</th>
+            <th>Identifier</th>
+          </tr>
+          {% for identifier in site_identifier.all %}
+          <tr>
+            <td>{{identifier.identifier_type}}</td>
+            <td>{{identifier.identifier}}</td>
+          </tr>
+          {% endfor%}
 
         </table>
 
