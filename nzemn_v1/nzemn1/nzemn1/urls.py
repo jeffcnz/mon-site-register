@@ -16,30 +16,31 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 from django.views.generic.base import RedirectView
-from rest_framework import routers, serializers, viewsets
-from rest_framework_gis.serializers import GeoFeatureModelSerializer
-from rest_framework_gis.filters import InBBoxFilter
-from sites.models import Site
+from rest_framework import routers#, viewsets, serializers
+#from rest_framework_gis.serializers import GeoFeatureModelSerializer
+#from rest_framework_gis.filters import InBBoxFilter
+#from sites.models import Site
+from sites import views
 
-class SitesSerializer(GeoFeatureModelSerializer):
-    """ A class to serialize locations as GeoJSON compatible data """
+#class SitesSerializer(GeoFeatureModelSerializer):
+#    """ A class to serialize locations as GeoJSON compatible data """
 
-    class Meta:
-        model = Site
-        geo_field = 'location'
-        fields = '__all__'
+#    class Meta:
+#        model = Site
+#        geo_field = 'location'
+#        fields = '__all__'
 
 
 # /sites/?in_bbox=-90,29,-89,35
-class SitesViewSet(viewsets.ModelViewSet):
-    queryset = Site.objects.all()
-    serializer_class = SitesSerializer
-    bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter, )
+#class SitesViewSet(viewsets.ModelViewSet):
+#    queryset = Site.objects.all()
+#    serializer_class = SitesSerializer
+#    bbox_filter_field = 'location'
+#    filter_backends = (InBBoxFilter, )
 
 
 router = routers.DefaultRouter()
-router.register(r'sites', SitesViewSet)
+router.register(r'sites', views.SitesViewSet)
 
 urlpatterns = [
     path('', RedirectView.as_view(url='/sites/')),

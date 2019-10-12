@@ -1,7 +1,16 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
+from rest_framework import viewsets
+from rest_framework_gis.filters import InBBoxFilter
 
 from .models import Site, SiteAgency, SiteOperation, SiteIdentifiers
+from .serialisers import SitesSerializer
+
+class SitesViewSet(viewsets.ModelViewSet):
+    queryset = Site.objects.all()
+    serializer_class = SitesSerializer
+    bbox_filter_field = 'location'
+    filter_backends = (InBBoxFilter, )
 
 
 def siteList(request):
