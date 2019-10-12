@@ -1,2 +1,6 @@
 django>=2.1
 psycopg2
+django-guardian
+djangorestframework
+djangorestframework-gis
+django-filter
