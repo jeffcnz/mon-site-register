@@ -13,6 +13,11 @@ class SitesViewSet(viewsets.ModelViewSet):
     filter_backends = (InBBoxFilter, )
 
 
+class SiteDetailViewSet(viewsets.ModelViewSet):
+    queryset = Site.objects.all()
+    serializer_class = SitesSerializer
+    
+
 def siteList(request):
     site_list = Site.objects.order_by('site_name')
     context = {'site_list': site_list,}
