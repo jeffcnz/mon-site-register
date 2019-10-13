@@ -16,7 +16,7 @@ class SitesViewSet(viewsets.ModelViewSet):
 class SiteDetailViewSet(viewsets.ModelViewSet):
     queryset = Site.objects.all()
     serializer_class = SitesSerializer
-    
+
 
 def siteList(request):
     site_list = Site.objects.order_by('site_name')
@@ -27,6 +27,7 @@ def siteList(request):
 def site(request, site_id):
     #return HttpResponse("You're looking at site %s." % site_id)
     site = get_object_or_404(Site, pk=site_id)
+    print(site.identifiers)
     site_agency = SiteAgency.objects.filter(site=site.id)
     site_operation = SiteOperation.objects.filter(site=site.id)
     site_identifier = SiteIdentifiers.objects.filter(site=site.id)
