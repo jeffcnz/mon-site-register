@@ -1,10 +1,27 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, render
 from rest_framework import viewsets
-from rest_framework_gis.filters import InBBoxFilter
+#from rest_framework_gis.filters import InBBoxFilter
+from .filters import InBBoxFilter
 
 from .models import Site, SiteAgency, SiteOperation, SiteIdentifiers
 from .serialisers import SitesSerializer
+
+class SitesViewSetTest(viewsets.ViewSet):
+
+    def list(self, request):
+        queryset = Site.objects.all()
+        serializer = SitesSerializer(queryset, many=True)
+        bbox_filter_field = 'location'
+        filter_backends = (InBBoxFilter, )
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        queryset = Site.objects.all()
+        site = get_object_or_404(queryset, pk=pk)
+        serializer = SitesSerializer(site)
+        return Response(serializer.data)
+
 
 class SitesViewSet(viewsets.ModelViewSet):
     queryset = Site.objects.all()
@@ -13,9 +30,9 @@ class SitesViewSet(viewsets.ModelViewSet):
     filter_backends = (InBBoxFilter, )
 
 
-class SiteDetailViewSet(viewsets.ModelViewSet):
-    queryset = Site.objects.all()
-    serializer_class = SitesSerializer
+#class SiteDetailViewSet(viewsets.ModelViewSet):
+#    queryset = Site.objects.all()
+#    serializer_class = SitesSerializer
 
 
 def siteList(request):
