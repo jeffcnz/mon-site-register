@@ -5,12 +5,16 @@
     <tr>
       <th>ID</th>
       <th>Name</th>
+      <th>Latitude</th>
+      <th>Longitude</th>
     </tr>
 
     {% for feature in features %}
     <tr>
       <td><a href="{{ feature.id }}/">{{ feature.id }}</a></td>
       <td>{{ feature.properties.site_name }}</td>
+      <td>{{ feature.geometry.coordinates.0 }}</td>
+      <td>{{ feature.geometry.coordinates.1 }}</td>
     </tr>
     {% endfor %}
   </table>
@@ -18,13 +22,49 @@
 {% else %}
 <table class="table">
   <tr>
-    <td>ID</td>
+    <th>ID</th>
     <td>{{ id }}</td>
   </tr>
   <tr>
-    <td>Name</td>
+    <th>Name</th>
     <td>{{ properties.site_name }}</td>
   </tr>
+  <tr>
+    <td>Location</td>
+    <td>{{ geometry.coordinates }}</td>
+  </tr>
 </table>
+
+<h3>Other Identifiers</h3>
+<table class="table">
+  <tr>
+    <th>Identifier</th>
+    <th>Type</th>
+  </tr>
+  {% for ident in properties.site_identifiers %}
+  <tr>
+    <td>{{ ident.identifier }}</td>
+    <td>{{ ident.identifier_type.identifier_name }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+<h3>Operating Agencies</h3>
+<table class="table">
+  <tr>
+    <th>Agency</th>
+    <th>From</th>
+    <th>To</th>
+  </tr>
+  {% for a in properties.site_agencies %}
+  <tr>
+    <td><a href="https://{{ a.agency.website }}">{{ a.agency.agency_name }}</a></td>
+    <td>{{ a.from_date }}</td>
+    <td>{{ a.to_date }}</td>
+  </tr>
+  {% endfor %}
+</table>
+
+
 
 {% endif %}

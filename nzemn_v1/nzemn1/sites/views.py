@@ -12,7 +12,7 @@ from .serialisers import SitesSerializer
 
 class SitesViewSetApiTest(viewsets.ModelViewSet):
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer, ]
-    template_name = 'sites/api_base.html'
+    template_name = 'sites/api_custom.html'
     queryset = Site.objects.all()
     serializer_class = SitesSerializer
     bbox_filter_field = 'location'

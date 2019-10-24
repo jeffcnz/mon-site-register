@@ -6,7 +6,7 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from . import views
 
 router = routers.DefaultRouter()
-router.register(r'collections/sites/items', views.SitesViewSetApiTest, basename='site')
+router.register(r'collections/sites/items', views.SitesViewSetApiTest, basename='apisite')
 #router.register(r'collections/sites/items/<int:pk>', views.SitesViewSetApiTest)
 
 

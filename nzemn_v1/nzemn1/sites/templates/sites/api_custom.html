@@ -1,0 +1,24 @@
+{% extends "api_base.html" %}
+
+{# Override this template in your own templates directory to customize #}
+{% block title %}NZEMS API{% endblock title %}
+
+
+{% block branding %}
+  <a class="navbar-brand" href="#">Prototype NZ Sites Register</a>
+{% endblock %}
+
+{% block customlinks %}
+  <li class="nav-item active">
+    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/sites">Sites</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link" href="/admin">Admin</a>
+  </li>
+  <li class="nav-item">
+    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+  </li>
+{% endblock %}
