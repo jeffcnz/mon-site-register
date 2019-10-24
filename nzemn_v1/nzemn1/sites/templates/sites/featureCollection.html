@@ -1,0 +1,20 @@
+
+  <div class="row">
+    <div class="col-sm">
+
+        <table class="table">
+          <tr>
+            <th>ID</th>
+            <th>Name</th>
+          </tr>
+          {% for feature in features %}
+          <tr>
+            <td><a href="id/{{ site.id }}/">{{ feature.id }}</a></td>
+            <td>{{ feature.properties.site_name }}</td>
+          </tr>
+          {% endfor %}
+        </table>
+
+    </div>
+
+  </div>

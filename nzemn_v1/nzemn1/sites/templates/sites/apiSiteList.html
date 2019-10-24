@@ -1,0 +1,30 @@
+
+{% load rest_framework %}
+{% if type == 'FeatureCollection' %}
+  <table class="table">
+    <tr>
+      <th>ID</th>
+      <th>Name</th>
+    </tr>
+
+    {% for feature in features %}
+    <tr>
+      <td><a href="{{ feature.id }}/">{{ feature.id }}</a></td>
+      <td>{{ feature.properties.site_name }}</td>
+    </tr>
+    {% endfor %}
+  </table>
+
+{% else %}
+<table class="table">
+  <tr>
+    <td>ID</td>
+    <td>{{ id }}</td>
+  </tr>
+  <tr>
+    <td>Name</td>
+    <td>{{ properties.site_name }}</td>
+  </tr>
+</table>
+
+{% endif %}

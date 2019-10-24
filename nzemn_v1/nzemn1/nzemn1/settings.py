@@ -170,5 +170,10 @@ REST_FRAMEWORK = {
     # or allow read-only access for unauthenticated users.
     'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.DjangoModelPermissionsOrAnonReadOnly'
-    ]
+    ],
+    #'DEFAULT_RENDERER_CLASSES': [
+    #    'rest_framework.renderers.JSONRenderer',
+    #    'rest_framework.renderers.AdminRenderer',
+    #    'rest_framework.renderers.TemplateHTMLRenderer',
+    #]
 }

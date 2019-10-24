@@ -53,4 +53,4 @@ class SitesSerializer(GeoFeatureModelSerializer):
         model = Site
         geo_field = 'location'
         #fields = '__all__'
-        fields = ['site_name', 'location', 'site_identifiers', 'site_agencies'] #'ident_type_to_site',
+        fields = ['id', 'site_name', 'location', 'site_identifiers', 'site_agencies'] #'ident_type_to_site',

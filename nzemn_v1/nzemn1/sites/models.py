@@ -12,7 +12,7 @@ from guardian.shortcuts import assign_perm
 class Agency(models.Model):
     agency_name = models.CharField(max_length=200)
     website = models.CharField(max_length=200)
-    site_webservices = models.ForeignKey(AgencySiteListServices, on_delete=models.CASCADE, related_name='agency_site_lists')
+    site_webservices = models.ForeignKey('AgencySiteListServices', null=True, blank=True, on_delete=models.CASCADE, related_name='agency_site_lists')
     def __str__(self):
         return self.agency_name
 
@@ -64,13 +64,13 @@ class SiteIdentifiers(models.Model):
 
 class AgencySiteListServices(models.Model):
     agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
-    service_type = models.ForeignKey(SiteServiceTypes, on_delete=models.CASCADE, related_name='site_service_types')
+    service_type = models.ForeignKey('SiteServiceTypes', on_delete=models.CASCADE, related_name='site_service_types')
     service_url = models.CharField(max_length=250)
 
 
 class SiteServiceTypes(models.Model):
     service_type = models.CharField(max_length=50)
-    
+
 
 @receiver(post_save, sender=Agency)
 def create_agency_group(sender, instance, created, **kwargs):

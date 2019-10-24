@@ -1,0 +1,42 @@
+{
+    "type": "FeatureCollection",
+    "features": [
+        {
+            "type": "Feature",
+            "geometry": {
+                "type": "Point",
+                "coordinates": [
+                    176.82086807136534,
+                    -39.38554801000278
+                ]
+            },
+            "properties": {
+                "site_name": "Test Site",
+                "site_identifiers": [
+                    {
+                        "identifier": "LAWA-123",
+                        "identifier_type": {
+                            "identifier_name": "LAWA"
+                        }
+                    },
+                    {
+                        "identifier": "123456",
+                        "identifier_type": {
+                            "identifier_name": "TIDEDA"
+                        }
+                    }
+                ],
+                "site_agencies": [
+                    {
+                        "agency": {
+                            "agency_name": "HBRC",
+                            "website": "hbrc.govt.nz"
+                        },
+                        "from_date": "2010-01-01",
+                        "to_date": null
+                    }
+                ]
+            }
+        }
+    ]
+}
