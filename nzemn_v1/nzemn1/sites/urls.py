@@ -18,6 +18,7 @@ urlpatterns = [
     path('web/id/<int:site_id>/', views.site, name='site'),
     #appi
     path('api/', include(router.urls)),
+    path('about/', views.about, name='about')
     #path('api/collections/sites', views.SitesViewSet)
     #path('api/<int:pk>/', views.SiteDetailViewSet)
 ]

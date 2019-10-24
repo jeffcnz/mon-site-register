@@ -26,6 +26,9 @@ class SitesViewSet(viewsets.ModelViewSet):
     filter_backends = (InBBoxFilter, )
 
 
+def about(request):
+    return render(request, 'sites/about.html')
+
 #class SiteDetailViewSet(viewsets.ModelViewSet):
 #    queryset = Site.objects.all()
 #    serializer_class = SitesSerializer

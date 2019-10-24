@@ -55,7 +55,6 @@
               </div>
             </div>
           {% endblock %}
-
           <div class="container">
             {% block breadcrumbs %}
               <ul class="breadcrumb">
@@ -71,6 +70,7 @@
 
           <!-- Content -->
           <div id="content">
+            {% block content %}
             {% if 'GET' in allowed_methods %}
               <form id="get-form" class="pull-right">
                 <fieldset>
@@ -166,6 +166,7 @@
                 </nav>
               {% endif %}
             </div>
+          {% endblock %}
           </div>
           <!-- END Content -->
         </div><!-- /.container -->
