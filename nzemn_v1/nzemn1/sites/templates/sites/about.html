@@ -1,6 +1,9 @@
 {% extends "api_custom.html" %}
 
-{% block content %}
-<h1>About</h1>
-<p>Cleaner implementation</p>
+{% block request_info %}
+<h1>{{ title }}</h1>
+{% for section in about_body %}
+<h3>{{ section.heading }}</h3>
+<p>{{ section.text }}</p>
+{% endfor %}
 {% endblock %}

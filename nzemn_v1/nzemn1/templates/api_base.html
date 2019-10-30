@@ -153,11 +153,11 @@
               {% endif %}
 
               <div class="request-info" style="clear: both" >
-                {% if style == 'list' %}
-                  {% include "sites/apiSiteList.html" %}
-                {% else %}
-                  {% include "sites/apiSiteList.html" %}
-                {% endif %}
+                {% block request_info %}
+
+                  {# include "sites/apiSiteList.html" #}
+
+                {% endblock %}
               </div>
 
               {% if paginator %}

@@ -1,7 +1,49 @@
-from .models import Site, SiteAgency, Agency, SiteIdentifiers, IdentifierType
+from .models import Site, SiteAgency, Agency, SiteIdentifiers, IdentifierType, AboutBody, About, ApiInfo, ApiConformance
 from rest_framework import serializers
 
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
+
+
+class AboutBodySerialiser(serializers.ModelSerializer):
+
+    class Meta:
+        model = AboutBody
+        fields = ['heading','text']
+
+
+class AboutSerialiser(serializers.ModelSerializer):
+    about_body = AboutBodySerialiser(many=True)
+    type = serializers.CharField(default='about')
+
+    class Meta:
+        model = About
+        fields = ['type', 'title', 'about_body', 'licence', 'author']
+
+
+class ApiInfoSerialiser(serializers.ModelSerializer):
+    type = serializers.CharField(default='api_info')
+    class Meta:
+        model = ApiInfo
+        #TODO add links to other pages into the serialiser
+        fields = ['type', 'title', 'description']
+
+
+class ApiConformanceSerialiser(serializers.ModelSerializer):
+
+    class Meta:
+        model = ApiConformance
+        # TODO change so matches wfs3 requirements
+        fields = ['name', 'url']
+
+
+
+#class ApiConformanceSerialiser(serializers.Serializer):
+    #type = serializers.CharField(default='conformance')
+    #conformsTo = ApiConformanceListSerialiser(many=True)
+    #class Meta:
+        #model = ApiConformance
+        # TODO change so matches wfs3 requirements
+        #fields = ['type', 'conformsTo']
 
 
 class AgencyDetailSerialiser(serializers.ModelSerializer):

@@ -9,6 +9,34 @@ from django.dispatch import receiver
 from guardian.shortcuts import assign_perm
 
 
+class ApiInfo(models.Model):
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    def __str__(self):
+        return self.title
+
+
+class ApiConformance(models.Model):
+    name = models.CharField(max_length=100)
+    url = models.URLField()
+    def __str__(self):
+        return self.name
+
+class AboutBody(models.Model):
+    about = models.ForeignKey('About', null=True, blank=True, on_delete=models.CASCADE, related_name='about_body')
+    heading = models.CharField(max_length=100)
+    text = models.TextField()
+    def __str__(self):
+        return self.heading
+
+
+class About(models.Model):
+    title = models.CharField(max_length=200)
+    #body = models.ForeignKey('AboutBody', null=True, blank=True, on_delete=models.CASCADE, related_name='about_body')
+    licence = models.CharField(max_length=100)
+    author = models.CharField(max_length=100)
+
+
 class Agency(models.Model):
     agency_name = models.CharField(max_length=200)
     website = models.CharField(max_length=200)

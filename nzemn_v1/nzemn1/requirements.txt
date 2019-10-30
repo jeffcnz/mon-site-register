@@ -4,3 +4,5 @@ django-guardian
 djangorestframework
 djangorestframework-gis
 django-filter
+pyyaml
+uritemplate

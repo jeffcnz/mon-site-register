@@ -1,5 +1,8 @@
 
-{% load rest_framework %}
+{% extends "api_custom.html" %}
+
+{% block request_info %}
+
 {% if type == 'FeatureCollection' %}
   <table class="table">
     <tr>
@@ -11,7 +14,7 @@
 
     {% for feature in features %}
     <tr>
-      <td><a href="{{ feature.id }}/">{{ feature.id }}</a></td>
+      <td><a href="{% url 'apisite-detail' feature.id %}">{{ feature.id }}</a></td>
       <td>{{ feature.properties.site_name }}</td>
       <td>{{ feature.geometry.coordinates.0 }}</td>
       <td>{{ feature.geometry.coordinates.1 }}</td>
@@ -19,7 +22,7 @@
     {% endfor %}
   </table>
 
-{% else %}
+{% elif type == 'Feature' %}
 <table class="table">
   <tr>
     <th>ID</th>
@@ -66,3 +69,4 @@
 </table>
 
 {% endif %}
+{% endblock %}

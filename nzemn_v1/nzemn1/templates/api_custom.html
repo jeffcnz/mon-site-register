@@ -1,24 +1,51 @@
 {% extends "api_base.html" %}
 
+{% load static %}
+{% load i18n %}
+{% load rest_framework %}
+
+
 {# Override this template in your own templates directory to customize #}
 {% block title %}NZEMS API{% endblock title %}
 
+{% block navbar %}
+  <div class="navbar navbar-static-top {% block bootstrap_navbar_variant %}navbar-inverse{% endblock %}">
+    <div class="container">
+      <span>
+        {% block branding %}
+          <a class="navbar-brand" href="#">Prototype NZ Sites Register</a>
+        {% endblock %}
+      </span>
+      <ul class="nav navbar-nav">
+        <li class="nav-item active">
+          <a class="nav-link" href="{% url 'info' %}">Home <span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'about' %}">About</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{% url 'swagger-ui' %}">API</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{% url 'api-root' %}">Collections</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link " href="{% url 'apisite-list' %}">Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="/admin">Admin</a>
+        </li>
 
-{% block branding %}
-  <a class="navbar-brand" href="#">Prototype NZ Sites Register</a>
-{% endblock %}
-
-{% block customlinks %}
-  <li class="nav-item active">
-    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="{% url 'about'%}">About</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link" href="/admin">Admin</a>
-  </li>
-  <li class="nav-item">
-    <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
-  </li>
+      </ul>
+      <ul class="nav navbar-nav pull-right">
+        {% block userlinks %}
+          {% if user.is_authenticated %}
+            {% optional_logout request user %}
+          {% else %}
+            {% optional_login request %}
+          {% endif %}
+        {% endblock %}
+      </ul>
+    </div>
+  </div>
 {% endblock %}

@@ -1,0 +1,20 @@
+{
+  "title": "Prototype New Zealand Environmental Monitoring Sites Register",
+  "description": "Access to a proptotype New Zealand Environmental Monitoring
+  Sites Register via a Web API that aims to conform to the OGC API Features
+  specification.",
+  "links": [
+    { "href": "{% url 'home'%}",
+      "rel": "self",
+      "type": "application.json",
+      "title": "this document"},
+      { "href": "http://data.example.org/api",
+      "rel": "service-desc", "type": "application/vnd.oai.openapi+json;version=3.0", "title": "the API definition" },
+    { "href": "http://data.example.org/api.html",
+      "rel": "service-doc", "type": "text/html", "title": "the API documentation" },
+    { "href": "http://data.example.org/conformance",
+      "rel": "conformance", "type": "application/json", "title": "OGC API conformance classes implemented by this server" },
+    { "href": "http://data.example.org/collections",
+      "rel": "data", "type": "application/json", "title": "Information about the feature collections" }
+  ]
+}

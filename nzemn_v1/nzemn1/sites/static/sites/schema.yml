@@ -1,0 +1,467 @@
+openapi: 3.0.2
+info:
+  title: ''
+  version: ''
+paths:
+  /nzemn/api/collections/sites/items/:
+    get:
+      operationId: listSites
+      parameters: []
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  properties:
+                    id:
+                      type: integer
+                      readOnly: true
+                    site_name:
+                      type: string
+                      maxLength: 200
+                    location:
+                      type: string
+                      nullable: true
+                    site_identifiers:
+                      type: array
+                      items:
+                        properties:
+                          identifier:
+                            type: string
+                            maxLength: 200
+                          identifier_type:
+                            properties:
+                              identifier_name:
+                                type: string
+                                maxLength: 200
+                            required:
+                            - identifier_name
+                            type: object
+                        required:
+                        - identifier
+                        - identifier_type
+                    site_agencies:
+                      type: array
+                      items:
+                        properties:
+                          agency:
+                            properties:
+                              agency_name:
+                                type: string
+                                maxLength: 200
+                              website:
+                                type: string
+                                maxLength: 200
+                            required:
+                            - agency_name
+                            - website
+                            type: object
+                          from_date:
+                            type: string
+                            format: date
+                          to_date:
+                            type: string
+                            format: date
+                            nullable: true
+                        required:
+                        - agency
+                        - from_date
+                      readOnly: true
+                  required:
+                  - site_name
+                  - site_identifiers
+          description: ''
+    post:
+      operationId: createSite
+      parameters: []
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                site_name:
+                  type: string
+                  maxLength: 200
+                location:
+                  type: string
+                  nullable: true
+                site_identifiers:
+                  type: array
+                  items:
+                    properties:
+                      identifier:
+                        type: string
+                        maxLength: 200
+                      identifier_type:
+                        properties:
+                          identifier_name:
+                            type: string
+                            maxLength: 200
+                        required:
+                        - identifier_name
+                        type: object
+                    required:
+                    - identifier
+                    - identifier_type
+              required:
+              - site_name
+              - site_identifiers
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  site_name:
+                    type: string
+                    maxLength: 200
+                  location:
+                    type: string
+                    nullable: true
+                  site_identifiers:
+                    type: array
+                    items:
+                      properties:
+                        identifier:
+                          type: string
+                          maxLength: 200
+                        identifier_type:
+                          properties:
+                            identifier_name:
+                              type: string
+                              maxLength: 200
+                          required:
+                          - identifier_name
+                          type: object
+                      required:
+                      - identifier
+                      - identifier_type
+                  site_agencies:
+                    type: array
+                    items:
+                      properties:
+                        agency:
+                          properties:
+                            agency_name:
+                              type: string
+                              maxLength: 200
+                            website:
+                              type: string
+                              maxLength: 200
+                          required:
+                          - agency_name
+                          - website
+                          type: object
+                        from_date:
+                          type: string
+                          format: date
+                        to_date:
+                          type: string
+                          format: date
+                          nullable: true
+                      required:
+                      - agency
+                      - from_date
+                    readOnly: true
+                required:
+                - site_name
+                - site_identifiers
+          description: ''
+  /nzemn/api/collections/sites/items/{id}/:
+    get:
+      operationId: retrieveSite
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this site.
+        schema:
+          type: string
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  site_name:
+                    type: string
+                    maxLength: 200
+                  location:
+                    type: string
+                    nullable: true
+                  site_identifiers:
+                    type: array
+                    items:
+                      properties:
+                        identifier:
+                          type: string
+                          maxLength: 200
+                        identifier_type:
+                          properties:
+                            identifier_name:
+                              type: string
+                              maxLength: 200
+                          required:
+                          - identifier_name
+                          type: object
+                      required:
+                      - identifier
+                      - identifier_type
+                  site_agencies:
+                    type: array
+                    items:
+                      properties:
+                        agency:
+                          properties:
+                            agency_name:
+                              type: string
+                              maxLength: 200
+                            website:
+                              type: string
+                              maxLength: 200
+                          required:
+                          - agency_name
+                          - website
+                          type: object
+                        from_date:
+                          type: string
+                          format: date
+                        to_date:
+                          type: string
+                          format: date
+                          nullable: true
+                      required:
+                      - agency
+                      - from_date
+                    readOnly: true
+                required:
+                - site_name
+                - site_identifiers
+          description: ''
+    put:
+      operationId: updateSite
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this site.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                site_name:
+                  type: string
+                  maxLength: 200
+                location:
+                  type: string
+                  nullable: true
+                site_identifiers:
+                  type: array
+                  items:
+                    properties:
+                      identifier:
+                        type: string
+                        maxLength: 200
+                      identifier_type:
+                        properties:
+                          identifier_name:
+                            type: string
+                            maxLength: 200
+                        required:
+                        - identifier_name
+                        type: object
+                    required:
+                    - identifier
+                    - identifier_type
+              required:
+              - site_name
+              - site_identifiers
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  site_name:
+                    type: string
+                    maxLength: 200
+                  location:
+                    type: string
+                    nullable: true
+                  site_identifiers:
+                    type: array
+                    items:
+                      properties:
+                        identifier:
+                          type: string
+                          maxLength: 200
+                        identifier_type:
+                          properties:
+                            identifier_name:
+                              type: string
+                              maxLength: 200
+                          required:
+                          - identifier_name
+                          type: object
+                      required:
+                      - identifier
+                      - identifier_type
+                  site_agencies:
+                    type: array
+                    items:
+                      properties:
+                        agency:
+                          properties:
+                            agency_name:
+                              type: string
+                              maxLength: 200
+                            website:
+                              type: string
+                              maxLength: 200
+                          required:
+                          - agency_name
+                          - website
+                          type: object
+                        from_date:
+                          type: string
+                          format: date
+                        to_date:
+                          type: string
+                          format: date
+                          nullable: true
+                      required:
+                      - agency
+                      - from_date
+                    readOnly: true
+                required:
+                - site_name
+                - site_identifiers
+          description: ''
+    patch:
+      operationId: partial_updateSite
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this site.
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              properties:
+                site_name:
+                  type: string
+                  maxLength: 200
+                location:
+                  type: string
+                  nullable: true
+                site_identifiers:
+                  type: array
+                  items:
+                    properties:
+                      identifier:
+                        type: string
+                        maxLength: 200
+                      identifier_type:
+                        properties:
+                          identifier_name:
+                            type: string
+                            maxLength: 200
+                        required:
+                        - identifier_name
+                        type: object
+                    required:
+                    - identifier
+                    - identifier_type
+      responses:
+        '200':
+          content:
+            application/json:
+              schema:
+                properties:
+                  id:
+                    type: integer
+                    readOnly: true
+                  site_name:
+                    type: string
+                    maxLength: 200
+                  location:
+                    type: string
+                    nullable: true
+                  site_identifiers:
+                    type: array
+                    items:
+                      properties:
+                        identifier:
+                          type: string
+                          maxLength: 200
+                        identifier_type:
+                          properties:
+                            identifier_name:
+                              type: string
+                              maxLength: 200
+                          required:
+                          - identifier_name
+                          type: object
+                      required:
+                      - identifier
+                      - identifier_type
+                  site_agencies:
+                    type: array
+                    items:
+                      properties:
+                        agency:
+                          properties:
+                            agency_name:
+                              type: string
+                              maxLength: 200
+                            website:
+                              type: string
+                              maxLength: 200
+                          required:
+                          - agency_name
+                          - website
+                          type: object
+                        from_date:
+                          type: string
+                          format: date
+                        to_date:
+                          type: string
+                          format: date
+                          nullable: true
+                      required:
+                      - agency
+                      - from_date
+                    readOnly: true
+                required:
+                - site_name
+                - site_identifiers
+          description: ''
+    delete:
+      operationId: destroySite
+      parameters:
+      - name: id
+        in: path
+        required: true
+        description: A unique integer value identifying this site.
+        schema:
+          type: string
+      responses:
+        '204':
+          description: ''
