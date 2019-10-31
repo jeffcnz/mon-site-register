@@ -6,17 +6,9 @@ from django.forms.widgets import Textarea
 from django.contrib.gis.db import models
 from . import widgets
 
-from .models import Site, Agency, IdentifierType, SiteAgency, SiteOperation, SiteIdentifiers, About, AboutBody, ApiInfo, ApiConformance
+from .models import Site, Agency, IdentifierType, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, ApiConformance
 
 #from leaflet.admin import LeafletGeoAdmin
-
-
-class AboutBodyAdmin(admin.TabularInline):
-    model = AboutBody
-
-
-class AboutAdmin(admin.ModelAdmin):
-    inlines = [AboutBodyAdmin]
 
 
 class OperationInline(admin.TabularInline):
@@ -60,6 +52,6 @@ admin.site.register(IdentifierType)
 #admin.site.register(SiteAgency)
 #admin.site.register(SiteOperation)
 #admin.site.register(SiteIdentifiers)
-admin.site.register(About, AboutAdmin)
+
 admin.site.register(ApiInfo)
 admin.site.register(ApiConformance)

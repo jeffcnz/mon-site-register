@@ -9,37 +9,21 @@ from . import views
 from . import custom_routers
 
 #router = routers.DefaultRouter()
+# Register sites api to use a custome router that complies with requirements of WFS3.
 router = custom_routers.OGCRouter()
 router.register(r'sites', views.SitesViewSetApiTest, basename='apisite')
-#router.register(r'sites/items/<int:pk>', views.SitesViewSetApiTest)
 
-#apirouter = routers.DefaultRouter()
-#apirouter.register(r'about', views.AboutViewSet, basename='about')
-#apirouter.register(r'conformance', views.ApiConformanceViewSet, basename='conformance')
-#apirouter.register(r'', views.ApiInfoViewSet, basename='info')
-
-
+#Assign paths for api info and conformance endpoints
 urlpatterns = [
     path('', views.ApiInfoViewSet.as_view(), name='info'),
-    #path('', RedirectView.as_view(url='web/')),
-    #path('', include(apirouter.urls)),
-
     path('conformance/', views.ApiConformanceViewSet.as_view(), name='conformance'),
-    #path('collections/', views.collections, name='collections'),
 
-    # ex: /sites/
-    #path('web/', views.siteList, name='siteList'),
-    # ex: /sites/id/5/
-    #path('web/id/<int:site_id>/', views.site, name='site'),
-    #appi
-
-    path('about/', views.AboutViewSet.as_view(), name='about')
-    #path('api/collections/sites', views.SitesViewSet)
-    #path('api/<int:pk>/', views.SiteDetailViewSet)
 ]
 
+# Setup type routing for html and json
 urlpatterns = format_suffix_patterns(urlpatterns)
 
+# Add the api info in swagger format for html or jason otherwise.
 urlpatterns += [
     path('api/', get_schema_view(
     title="NZEMS",

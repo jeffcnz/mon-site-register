@@ -22,20 +22,6 @@ class ApiConformance(models.Model):
     def __str__(self):
         return self.name
 
-class AboutBody(models.Model):
-    about = models.ForeignKey('About', null=True, blank=True, on_delete=models.CASCADE, related_name='about_body')
-    heading = models.CharField(max_length=100)
-    text = models.TextField()
-    def __str__(self):
-        return self.heading
-
-
-class About(models.Model):
-    title = models.CharField(max_length=200)
-    #body = models.ForeignKey('AboutBody', null=True, blank=True, on_delete=models.CASCADE, related_name='about_body')
-    licence = models.CharField(max_length=100)
-    author = models.CharField(max_length=100)
-
 
 class Agency(models.Model):
     agency_name = models.CharField(max_length=200)
