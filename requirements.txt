@@ -6,6 +6,6 @@ djangorestframework-gis
 django-filter
 pyyaml
 uritemplate
-django-heroku
 gunicorn
+django-heroku
 leaflet
