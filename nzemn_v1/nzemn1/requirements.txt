@@ -7,3 +7,4 @@ django-filter
 pyyaml
 uritemplate
 django-heroku
+gunicorn
