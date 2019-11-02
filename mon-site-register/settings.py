@@ -157,6 +157,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
+# For Heroku
+GDAL_LIBRARY_PATH = os.environ.get('GDAL_LIBRARY_PATH')
+GEOS_LIBRARY_PATH = os.environ.get('GEOS_LIBRARY_PATH')
+
 # Leaflet Configurations
 LEAFLET_CONFIG = {
     'DEFAULT_CENTER': (-41.2706, 173.2840),
