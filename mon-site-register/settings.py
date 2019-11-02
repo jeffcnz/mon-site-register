@@ -70,7 +70,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'nzemn1.urls'
+ROOT_URLCONF = 'mon-site-register.urls'
 
 TEMPLATES = [
     {
@@ -88,7 +88,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'nzemn1.wsgi.application'
+WSGI_APPLICATION = 'mon-site-register.wsgi.application'
 
 
 # Database
