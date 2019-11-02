@@ -1,1 +1,1 @@
-web: gunicorn nzemn1.wsgi
+web: gunicorn mon-site-register.wsgi
