@@ -19,11 +19,14 @@ Since the Envirolink report was published the OGC and W3C have published the OGC
 
 This prototype aims to provide an OGCAPI Features compliant API service with a secure administration area for maintenence of the register.  The api can also allow for script based maintenence of sites (add and update) on a permissions basis.
 
+[Spatial Data on the web best practices]{https://www.w3.org/TR/sdw-bp/#indexable-by-search-engines}
+
 ## Tech/framework used
 <b>Built with</b>
 - [Geo Django](https://docs.djangoproject.com/en/2.2/ref/contrib/gis/)
 - [PostGIS](https://postgis.net/)
 - [Django REST Framework](https://www.django-rest-framework.org/)
+- [Django REST Freamework GIS](https://github.com/djangonauts/django-rest-framework-gis)
 - [Bootstrap](https://getbootstrap.com/)
 
 ## Features  
