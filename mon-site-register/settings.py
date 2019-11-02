@@ -18,8 +18,15 @@ from django.core.exceptions import ImproperlyConfigured
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
 # Import 'secret' info
-with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
-    secrets = json.load(secrets_file)
+if (os.path.isfile(os.path.join(BASE_DIR, 'secrets.json'))):
+    with open(os.path.join(BASE_DIR, 'secrets.json')) as secrets_file:
+        secrets = json.load(secrets_file)
+else:
+    secrets = {
+      "SECRET_KEY": "default",
+      "USER": "user",
+      "DB_PASSWORD": "pass"
+    }
 
 def get_secret(setting, secrets=secrets):
     """Get secret setting or fail with ImproperlyConfigured"""
