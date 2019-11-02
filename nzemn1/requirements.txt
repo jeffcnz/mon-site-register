@@ -8,3 +8,4 @@ pyyaml
 uritemplate
 django-heroku
 gunicorn
+leaflet
