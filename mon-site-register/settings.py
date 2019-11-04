@@ -14,6 +14,7 @@ import json
 import os
 from django.core.exceptions import ImproperlyConfigured
 #import dj_database_url
+import django_heroku
 
 
 
@@ -103,23 +104,30 @@ WSGI_APPLICATION = 'mon-site-register.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
-
-DATABASES = {
+# Set database depending whether local or on Heroku
+if os.environ.get('ENV') == 'HEROKU':
+    DATABASES = {
     'default': {
-        # Initial SQLite database
-        #'ENGINE': 'django.db.backends.sqlite3',
-        #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-
-        # Updated to PostGIS
         'ENGINE': 'django.contrib.gis.db.backends.postgis',
-        'NAME': 'gisdb',
-        'USER': get_secret('USER'),
-        'PASSWORD': get_secret('DB_PASSWORD'),
-        'HOST':'localhost',
-        'PORT':'5433',
-
     }
-}
+    }
+else:
+    DATABASES = {
+        'default': {
+            # Initial SQLite database
+            #'ENGINE': 'django.db.backends.sqlite3',
+            #'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+
+            # Updated to PostGIS
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',
+            'NAME': 'gisdb',
+            'USER': get_secret('USER'),
+            'PASSWORD': get_secret('DB_PASSWORD'),
+            'HOST':'localhost',
+            'PORT':'5433',
+
+            }
+            }
 
 #DATABASES['default'] = dj_database_url.config()
 #DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
@@ -199,6 +207,6 @@ REST_FRAMEWORK = {
 }
 
 # Configure Django App for Heroku.
-import django_heroku
+
 django_heroku.settings(locals())
-DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+#DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
