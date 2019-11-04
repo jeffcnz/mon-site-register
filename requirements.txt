@@ -6,6 +6,6 @@ djangorestframework-gis
 django-filter
 pyyaml
 uritemplate
-gunicorn==19.9.0
+gunicorn
 django-heroku
 leaflet

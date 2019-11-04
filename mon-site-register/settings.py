@@ -13,6 +13,9 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 import json
 import os
 from django.core.exceptions import ImproperlyConfigured
+#import dj_database_url
+
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -118,6 +121,9 @@ DATABASES = {
     }
 }
 
+#DATABASES['default'] = dj_database_url.config()
+#DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+
 
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
@@ -192,3 +198,4 @@ REST_FRAMEWORK = {
 # Configure Django App for Heroku.
 import django_heroku
 django_heroku.settings(locals())
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
