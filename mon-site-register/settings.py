@@ -44,11 +44,9 @@ def get_secret(setting, secrets=secrets):
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
-# SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = get_secret('SECRET_KEY')
 
-# SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+
+
 
 ALLOWED_HOSTS = []
 
@@ -107,10 +105,15 @@ WSGI_APPLICATION = 'mon-site-register.wsgi.application'
 # Set database depending whether local or on Heroku
 if os.environ.get('ENV') == 'HEROKU':
     DATABASES = {
-    'default': {
-        'ENGINE': 'django.contrib.gis.db.backends.postgis',
-    }
-    }
+        'default': {
+            'ENGINE': 'django.contrib.gis.db.backends.postgis',
+            'NAME': 'postgis'
+            }
+        }
+    # SECURITY WARNING: keep the secret key used in production secret!
+    SECRET_KEY = get_secret('SECRET_KEY')
+    # SECURITY WARNING: don't run with debug turned on in production!
+    DEBUG = True
 else:
     DATABASES = {
         'default': {
@@ -126,8 +129,9 @@ else:
             'HOST':'localhost',
             'PORT':'5433',
 
+                }
             }
-            }
+    DEBUG = False
 
 #DATABASES['default'] = dj_database_url.config()
 #DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
