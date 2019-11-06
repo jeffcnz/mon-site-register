@@ -6,7 +6,7 @@ from django.contrib.auth.models import User, Group
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from guardian.shortcuts import assign_perm
+#from guardian.shortcuts import assign_perm
 
 
 class ApiInfo(models.Model):
@@ -86,9 +86,9 @@ class SiteServiceTypes(models.Model):
     service_type = models.CharField(max_length=50)
 
 
-@receiver(post_save, sender=Agency)
-def create_agency_group(sender, instance, created, **kwargs):
-    if created:
-        newgroup = Group.objects.create(name=instance.agency_name)
-        newgroup.save()
-        assign_perm('change_agency', newgroup, newgroup)
+#@receiver(post_save, sender=Agency)
+#def create_agency_group(sender, instance, created, **kwargs):
+#    if created:
+#        newgroup = Group.objects.create(name=instance.agency_name)
+#        newgroup.save()
+#        assign_perm('change_agency', newgroup, newgroup)
