@@ -214,4 +214,4 @@ REST_FRAMEWORK = {
 # Configure Django App for Heroku.
 
 django_heroku.settings(locals())
-#DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
