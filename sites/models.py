@@ -40,8 +40,8 @@ class IdentifierType(models.Model):
 class Site(models.Model):
     site_name = models.CharField(max_length=200)
     location = models.PointField('site location', null=True, blank=True, srid=4326)
-    identifiers = models.ManyToManyField(IdentifierType, through='SiteIdentifiers')
-    agencies = models.ManyToManyField(Agency, through='SiteAgency')
+    identifiers = models.ManyToManyField(IdentifierType, null=True, through='SiteIdentifiers')
+    agencies = models.ManyToManyField(Agency, null=True, through='SiteAgency')
     #operational_periods = models.ForeignKey('SiteOperation', null=True, on_delete=models.CASCADE, related_name='site_operating')
     # need to add a feature of interest, but how define???
     def __str__(self):
@@ -51,7 +51,7 @@ class Site(models.Model):
 class SiteAgency(models.Model):
     # Check / work through the on delete actions
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='site_agencies')
-    agency = models.OneToOneField(Agency, on_delete=models.CASCADE, related_name='agency_to_site')
+    agency = models.OneToOneField(Agency, on_delete=models.SET_NULL, related_name='agency_to_site', null=True)
     from_date = models.DateField('agency from date')
     to_date = models.DateField('agency to date', null=True, blank=True)
     #def __str__(self):
@@ -59,7 +59,7 @@ class SiteAgency(models.Model):
 
 
 class SiteOperation(models.Model):
-    site = models.ForeignKey(Site, on_delete=models.CASCADE)
+    site = models.ForeignKey(Site, on_delete=models.SET_NULL, null=True)
     from_date = models.DateField('operational from date')
     to_date = models.DateField('operational to date', null=True, blank=True)
     #def __str__(self):
@@ -69,7 +69,7 @@ class SiteOperation(models.Model):
 class SiteIdentifiers(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='site_identifiers') #site_to_ident_type
     #identifier_type = models.ForeignKey(IdentifierType, on_delete=models.CASCADE, related_name='site_ident') #ident_type_to_site
-    identifier_type = models.OneToOneField(IdentifierType, on_delete=models.CASCADE, related_name='ident_site') #ident_type_to_site
+    identifier_type = models.OneToOneField(IdentifierType, on_delete=models.SET_NULL, related_name='ident_site', null=True) #ident_type_to_site
     identifier = models.CharField(max_length=200)
 
     #def __str__(self):
