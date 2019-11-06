@@ -1,6 +1,6 @@
 #from django.contrib.gis import admin
 
-from django.contrib import admin
+from django.contrib.gis import admin
 
 from django.forms.widgets import Textarea
 from django.contrib.gis.db import models
@@ -25,7 +25,7 @@ class IdentifiersInline(admin.TabularInline):
     model = SiteIdentifiers
     extra = 0
 
-class SiteAdmin(admin.ModelAdmin):
+class SiteAdmin(admin.GeoModelAdmin):
 #class SiteAdmin(admin.OSMGeoAdmin):
     #default_lon = 173.2840
     #default_lat = -41.2706

@@ -39,7 +39,7 @@ class IdentifierType(models.Model):
 
 class Site(models.Model):
     site_name = models.CharField(max_length=200)
-    location = models.PointField('site location', null=True, blank=True)
+    location = models.PointField('site location', null=True, blank=True, srid=4326)
     identifiers = models.ManyToManyField(IdentifierType, through='SiteIdentifiers')
     agencies = models.ManyToManyField(Agency, through='SiteAgency')
     #operational_periods = models.ForeignKey('SiteOperation', null=True, on_delete=models.CASCADE, related_name='site_operating')
