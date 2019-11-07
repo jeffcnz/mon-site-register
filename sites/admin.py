@@ -1,10 +1,12 @@
 #from django.contrib.gis import admin
 
-from django.contrib.gis import admin
+from django.contrib import admin
 
 from django.forms.widgets import Textarea
 from django.contrib.gis.db import models
 from . import widgets
+
+from sites.forms import GISEntryForm
 
 from .models import Site, Agency, IdentifierType, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, ApiConformance
 
@@ -25,7 +27,7 @@ class IdentifiersInline(admin.TabularInline):
     model = SiteIdentifiers
     extra = 0
 
-class SiteAdmin(admin.GeoModelAdmin):
+class SiteAdmin(admin.ModelAdmin):
 #class SiteAdmin(admin.OSMGeoAdmin):
     #default_lon = 173.2840
     #default_lat = -41.2706
@@ -33,16 +35,17 @@ class SiteAdmin(admin.GeoModelAdmin):
     #default_lat = -5052337.41
 
     #default_zoom = 6
-    formfield_overrides = {
+    #formfield_overrides = {
         #models.PointField: {'widget': Textarea}
-        models.PointField: {'widget': widgets.LatLongWidget}
-    }
+    #    models.PointField: {'widget': widgets.LatLongWidget}
+    #}
+    form = GISEntryForm
 
-    fieldsets = [
-        (None,               {'fields': ['site_name']}),
+    #fieldsets = [
+    #    (None,               {'fields': ['site_name']}),
         #('Location', {'fields': ['location'], 'classes': ['collapse']}),
-        ('Location', {'fields': ['location']}),
-    ]
+    #    ('Location', {'fields': ['location']}),
+    #]
     inlines = [IdentifiersInline, AgenciesInline, OperationInline]
 
 

@@ -51,7 +51,7 @@ class Site(models.Model):
 class SiteAgency(models.Model):
     # Check / work through the on delete actions
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='site_agencies')
-    agency = models.OneToOneField(Agency, on_delete=models.SET_NULL, related_name='agency_to_site', null=True)
+    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, related_name='agency_to_site', null=True)
     from_date = models.DateField('agency from date')
     to_date = models.DateField('agency to date', null=True, blank=True)
     #def __str__(self):
@@ -68,8 +68,8 @@ class SiteOperation(models.Model):
 
 class SiteIdentifiers(models.Model):
     site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='site_identifiers') #site_to_ident_type
-    #identifier_type = models.ForeignKey(IdentifierType, on_delete=models.CASCADE, related_name='site_ident') #ident_type_to_site
-    identifier_type = models.OneToOneField(IdentifierType, on_delete=models.SET_NULL, related_name='ident_site', null=True) #ident_type_to_site
+    identifier_type = models.ForeignKey(IdentifierType, on_delete=models.CASCADE, related_name='site_ident', null=True) #ident_type_to_site
+    #identifier_type = models.OneToOneField(IdentifierType, on_delete=models.SET_NULL, related_name='ident_site', null=True) #ident_type_to_site
     identifier = models.CharField(max_length=200)
 
     #def __str__(self):
