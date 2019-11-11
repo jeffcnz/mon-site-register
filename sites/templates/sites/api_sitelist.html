@@ -51,7 +51,7 @@
     {% for ident in properties.site_identifiers %}
     <tr property="PropertyValue">
       <td property="identifier">{{ ident.identifier }}</td>
-      <td property="name">{{ ident.identifier_type.identifier_name }}</td>
+      <td property="name">{{ ident.identifier_name }}</td>
     </tr>
     {% endfor %}
   </table>
@@ -65,7 +65,7 @@
     </tr>
     {% for a in properties.site_agencies %}
     <tr typeof=Organisation>
-      <td property="name"><a href="https://{{ a.agency.website }}">{{ a.agency.agency_name }}</a></td>
+      <td property="name"><a href="https://{{ a.agency.website }}">{{ a.agency_name }}</a></td>
       <td property="startTime">{{ a.from_date }}</td>
       <td property="endTime">{{ a.to_date }}</td>
     </tr>
