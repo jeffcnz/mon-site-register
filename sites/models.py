@@ -24,7 +24,7 @@ class ApiConformance(models.Model):
 
 
 class Agency(models.Model):
-    agency_name = models.CharField(max_length=200)
+    agency_name = models.CharField(max_length=200, unique=True)
     website = models.CharField(max_length=200)
     #site_webservices = models.ForeignKey('AgencySiteListServices', null=True, blank=True, on_delete=models.CASCADE, related_name='agency_site_lists')
     def __str__(self):
@@ -32,7 +32,7 @@ class Agency(models.Model):
 
 
 class IdentifierType(models.Model):
-    identifier_name = models.CharField(max_length=200)
+    identifier_name = models.CharField(max_length=200, unique=True)
     def __str__(self):
         return self.identifier_name
 
@@ -50,8 +50,8 @@ class Site(models.Model):
 
 class SiteAgency(models.Model):
     # Check / work through the on delete actions
-    site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='site_agencies')
-    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, related_name='agency_to_site', null=True)
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)#, related_name='site_agencies')
+    agency = models.ForeignKey(Agency, on_delete=models.CASCADE, null=True)#, related_name='agency_to_site')
     from_date = models.DateField('agency from date')
     to_date = models.DateField('agency to date', null=True, blank=True)
     #def __str__(self):
@@ -67,8 +67,8 @@ class SiteOperation(models.Model):
 
 
 class SiteIdentifiers(models.Model):
-    site = models.ForeignKey(Site, on_delete=models.CASCADE, related_name='site_identifiers') #site_to_ident_type
-    identifier_type = models.ForeignKey(IdentifierType, on_delete=models.CASCADE, related_name='site_ident', null=True) #ident_type_to_site
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)#, related_name='site_idents') #site_to_ident_type
+    identifier_type = models.ForeignKey(IdentifierType, on_delete=models.CASCADE, null=True)#, related_name='site_ident') #ident_type_to_site
     #identifier_type = models.OneToOneField(IdentifierType, on_delete=models.SET_NULL, related_name='ident_site', null=True) #ident_type_to_site
     identifier = models.CharField(max_length=200)
 

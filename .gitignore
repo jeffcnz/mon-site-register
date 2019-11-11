@@ -8,6 +8,8 @@
 **/__pycache__
 **/secrets.json
 **/db.json
+**/key_generator.py
+
 
 # Exceptions
 setup.md
