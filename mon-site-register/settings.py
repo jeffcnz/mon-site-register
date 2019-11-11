@@ -164,9 +164,14 @@ LANGUAGE_CODE = 'en-us'
 
 TIME_ZONE = 'Pacific/Auckland'
 
+DATE_FORMAT = 'd m Y'
+
+DATETIME_FORMAT = 'd m Y H:i:s'
+
 USE_I18N = True
 
-USE_L10N = True
+# Use Local date formatting False so can set format
+USE_L10N = False
 
 USE_TZ = True
 
