@@ -55,7 +55,7 @@ class SiteIdentifiersSerialiser(serializers.ModelSerializer):
     class Meta:
         model = SiteIdentifiers
         fields = ['identifier_name', 'identifier']
-
+        
 
 class SitesSerializer(GeoFeatureModelSerializer):
     """ A class to serialize sites as GeoJSON compatible data """

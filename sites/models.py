@@ -72,6 +72,11 @@ class SiteIdentifiers(models.Model):
     #identifier_type = models.OneToOneField(IdentifierType, on_delete=models.SET_NULL, related_name='ident_site', null=True) #ident_type_to_site
     identifier = models.CharField(max_length=200)
 
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['identifier_type', 'identifier'], name='unique other identifiers')
+        ]
+
     #def __str__(self):
     #    return self.identifier_type
 
