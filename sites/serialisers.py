@@ -38,23 +38,6 @@ class SiteAgencySerialiser(serializers.ModelSerializer):
     class Meta:
         model = SiteAgency
         fields = ['agency_name', 'website', 'from_date', 'to_date']
-        #fields = ['agency', 'from_date', 'to_date']
-        #depth = 1
-
-    # Define a custom create method for nested database
-    #def create(self, validated_data):
-        #agency_detail_data = validated_data.pop('agency')
-    #    print("Getting to here")
-    #    agencies_detail_data = validated_data.pop('agency')
-    #    agency = SiteAgency.objects.create(**validated_data)
-    #    agencydetail = Agency.objects.create(agency=agency, **validated_data)
-        #for agency_detail_data in agencies_detail_data:
-            #agencydetail = Agency.objects.create(agency=agency, **validated_data)
-            #agency = SiteAgency.objects.create(**validated_data)
-            #Agency.objects.create(agency=agency, **agency_detail_data)
-        #agency = SiteAgency.objects.create(**validated_data)
-        #Agency.objects.create(agency=agency, **agency_detail_data)
-    #    return agency
 
 
 class IdentifierTypeSerialiser(serializers.ModelSerializer):
@@ -72,14 +55,6 @@ class SiteIdentifiersSerialiser(serializers.ModelSerializer):
     class Meta:
         model = SiteIdentifiers
         fields = ['identifier_name', 'identifier']
-        #fields = ['identifier', 'identifier_type']
-
-    # Define a custom create method for nested database
-    #def create(self, validated_data):
-    #    identifier_type_data = validated_data.pop('identifier_type')
-    #    identifier = SiteIdentifiers.objects.create(**validated_data)
-    #    IdentifierType.objects.create(identifier=identifier, **identifier_type_data)
-    #    return identifier
 
 
 class SitesSerializer(GeoFeatureModelSerializer):
@@ -119,23 +94,3 @@ class SitesSerializer(GeoFeatureModelSerializer):
                 SiteIdentifiers(site=site, identifier_type=identifier_type_instance, identifier=identifier).save()
         site.save()
         return site
-
-
-    #Define a custom create method for nested data
-    #def create(self, validated_data):
-    #    print(validated_data)
-    #    agencies_data = validated_data.pop('site_agencies')
-    #    identifiers_data = validated_data.pop('site_identifiers')
-    #    site = Site.objects.create(**validated_data)
-    #    for agency_data in agencies_data:
-            #Convert Ordered Dicts to dictionaries from https://stackoverflow.com/questions/20166749/how-to-convert-an-ordereddict-into-a-regular-dict-in-python3
-            #agency_data = deep_convert_dict(agency_data)
-    #        print(agency_data)
-    #        agency, created = Agency.objects.get_or_create(agency_name=agency_data['agency']['agency_name'])
-    #        site.agencies.add(agency, "2010-01-01")
-            #siteagency = SiteAgency.objects.create(site=site, **agency_data)
-        #SiteAgency.objects.create(site=site, **agency_data)
-    #    for identifier_data in identifiers_data:
-    #        siteidentifiers = SiteIdentifiers.objects.create(site=site, **identifier_data)
-        #SiteIdentifiers.objects.create(site=site, **identifier_data)
-    #    return site
