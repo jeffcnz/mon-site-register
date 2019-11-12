@@ -44,6 +44,9 @@ class Site(models.Model):
     agencies = models.ManyToManyField(Agency, null=True, through='SiteAgency')
     #operational_periods = models.ForeignKey('SiteOperation', null=True, on_delete=models.CASCADE, related_name='site_operating')
     # need to add a feature of interest, but how define???
+    class Meta:
+        ordering = ['pk']
+        
     def __str__(self):
         return self.site_name
 
