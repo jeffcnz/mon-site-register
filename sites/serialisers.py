@@ -55,7 +55,7 @@ class SiteIdentifiersSerialiser(serializers.ModelSerializer):
     class Meta:
         model = SiteIdentifiers
         fields = ['identifier_name', 'identifier']
-        
+
 
 class SitesSerializer(GeoFeatureModelSerializer):
     """ A class to serialize sites as GeoJSON compatible data """
@@ -68,14 +68,18 @@ class SitesSerializer(GeoFeatureModelSerializer):
         geo_field = 'location'
         fields = ['id', 'site_name', 'location', 'site_identifiers', 'site_agencies']
 
-    # from https://codereview.stackexchange.com/questions/164616/django-rest-framework-manytomany-relationship-through-intermediate-model
+    # modified from https://codereview.stackexchange.com/questions/164616/django-rest-framework-manytomany-relationship-through-intermediate-model
     @transaction.atomic
     def create(self, validated_data):
+        # create subsets of the nested data
         agencies_data = validated_data.pop('siteagency_set')
         identifiers_data = validated_data.pop('siteidentifiers_set')
+        # create the new site base object
         site = Site.objects.create(**validated_data)
+        # check if agencies data has been provided
         if agencies_data:
-            #site_agencies = self.initial_data.get("site_agencies")
+            # If it has for each entry extract the data and
+            # create a new instance in the through table
             for agency in agencies_data:
                 agency_info = agency['agency']
                 agency_name = agency_info['agency_name']
@@ -83,14 +87,70 @@ class SitesSerializer(GeoFeatureModelSerializer):
                 to_date = agency['to_date']
                 agency_instance = Agency.objects.get(agency_name=agency_name)
                 SiteAgency(site=site, agency=agency_instance, from_date=from_date, to_date=to_date).save()
+        # check if identifiers data has been provided
         if identifiers_data:
+            # If it has for each entry extract the data and
+            # create a new instance in the through table
             #site_identifiers = self.initial_data.get("site_identifiers")
             for identifier_type in identifiers_data:
-                print(identifier_type)
                 identifier_info = identifier_type['identifier_type']
                 identifier_name = identifier_info['identifier_name']
                 identifier = identifier_type['identifier']
                 identifier_type_instance = IdentifierType.objects.get(identifier_name=identifier_name)
                 SiteIdentifiers(site=site, identifier_type=identifier_type_instance, identifier=identifier).save()
+
+        # Save and return the new record
         site.save()
         return site
+
+    def update(self, instance, validated_data):
+        # Get the relevant instance from the databases
+        #site = Site.objects.get(site=instance)
+        # create subsets of the nested data if they exist
+        try:
+            agencies_data = validated_data.pop('siteagency_set')
+        except:
+            agencies_data = False
+
+        try:
+            identifiers_data = validated_data.pop('siteidentifiers_set')
+        except:
+            identifiers_data = False
+        # Check if agency data has been provided
+        # TODO Need to work through how to update in here as
+        # multiple entries are allowed. Will need some logic regarding
+        # date comparisons.  Complex
+        #if agencies_data:
+            # Iterate through the agencies
+        #    for agency in agencies_data:
+                # Extract the agency name and retrieve it's instance from the db
+        #        agency_name = agency['agency']['agency_name']
+        #        agency_instance = Agency.objects.get(agency_name=agency_name)
+                # get the extra info (TODO check for values)
+        #        from_date = agency['from_date']
+        #        to_date = agency['to_date']
+                # save the record in the linking table
+        #        SiteAgency(site=instance, agency=agency_instance, from_date=from_date, to_date=to_date).save()
+        # check if identifiers data has been provided
+        if identifiers_data:
+            # Iterate through the identifiers
+            for identifier_type in identifiers_data:
+                # Extract identifier name and get it's instance from db
+                identifier_name = identifier_type['identifier_type']['identifier_name']
+                identifier_type_instance = IdentifierType.objects.get(identifier_name=identifier_name)
+                # get the identifier (TODO check for values)
+                identifier = identifier_type['identifier']
+                # get the id of the identifier type
+                identifier_type_instance = IdentifierType.objects.get(identifier_name=identifier_name)
+                # get or create the lookup table entry
+                identifier_instance, new_object = SiteIdentifiers.objects.get_or_create(site=instance, identifier_type=identifier_type_instance)
+                # update the identifier
+                identifier_instance.identifier = identifier
+                # save the record
+                identifier_instance.save()
+
+
+        #update the site record
+        instance.__dict__.update(**validated_data)
+        instance.save()
+        return instance
