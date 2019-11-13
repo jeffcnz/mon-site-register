@@ -13,6 +13,7 @@ from .filters import InBBoxFilter
 from .models import Site, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, ApiConformance
 from .serialisers import SitesSerializer, ApiInfoSerialiser, ApiConformanceSerialiser
 #from . import info
+from . import custom_viewsets
 
 
 class ApiInfoViewSet(APIView):
@@ -32,8 +33,8 @@ class ApiConformanceViewSet(APIView):
         serializer = ApiConformanceSerialiser(conformance, many=True)
         return Response(serializer.data)
 
-
-class SitesViewSetApiTest(viewsets.ModelViewSet):
+class SitesViewSetApi(custom_viewsets.NoDeleteViewset):
+#class SitesViewSetApi(viewsets.ModelViewSet):
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer, ]
     template_name = 'sites/api_sitelist.html'
     queryset = Site.objects.all()
@@ -42,8 +43,8 @@ class SitesViewSetApiTest(viewsets.ModelViewSet):
     filter_backends = (InBBoxFilter, )
 
 
-class SitesViewSet(viewsets.ModelViewSet):
-    queryset = Site.objects.all()
-    serializer_class = SitesSerializer
-    bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter, )
+#class SitesViewSet(viewsets.ModelViewSet):
+#    queryset = Site.objects.all()
+#    serializer_class = SitesSerializer
+#    bbox_filter_field = 'location'
+#    filter_backends = (InBBoxFilter, )

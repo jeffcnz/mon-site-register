@@ -11,7 +11,7 @@ from . import custom_routers
 #router = routers.DefaultRouter()
 # Register sites api to use a custome router that complies with requirements of WFS3.
 router = custom_routers.OGCRouter()
-router.register(r'sites', views.SitesViewSetApiTest, basename='apisite')
+router.register(r'sites', views.SitesViewSetApi, basename='apisite')
 
 #Assign paths for api info and conformance endpoints
 urlpatterns = [
