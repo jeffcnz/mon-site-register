@@ -5,7 +5,7 @@ from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-#from rest_framework.decorators import api_view, renderer_classes
+from rest_framework.decorators import api_view, permission_classes#, renderer_classes
 from rest_framework import permissions
 #from rest_framework_gis.filters import InBBoxFilter
 from .filters import InBBoxFilter
@@ -41,6 +41,13 @@ class SitesViewSetApi(custom_viewsets.NoDeleteViewset):
     serializer_class = SitesSerializer
     bbox_filter_field = 'location'
     filter_backends = (InBBoxFilter, )
+
+
+@api_view()
+@permission_classes([permissions.IsAuthenticatedOrReadOnly])
+def collection(request):
+    output = {"id": "sites", "title": "Environmental Monitoring Sites", "description": "Environmental monitoring sites"}
+    return Response(output)
 
 
 #class SitesViewSet(viewsets.ModelViewSet):
