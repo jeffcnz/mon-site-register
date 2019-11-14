@@ -6,12 +6,13 @@ from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.schemas import get_schema_view
 
 from . import views
-from . import custom_routers
+#from . import custom_routers
 
 #router = routers.DefaultRouter()
 # Register sites api to use a custome router that complies with requirements of WFS3.
-router = custom_routers.OGCRouter()
-router.register(r'sites', views.SitesViewSetApi, basename='apisite')
+#router = custom_routers.OGCRouter()
+router = routers.DefaultRouter(trailing_slash=False)
+router.register(r'items', views.SitesViewSetApi, basename='apisite')
 
 #Assign paths for api info and conformance endpoints
 urlpatterns = [
@@ -32,5 +33,5 @@ urlpatterns += [
     path('api.html', TemplateView.as_view(
     template_name='sites/swagger-api.html'
     ), name='swagger-ui'),
-    path('collections/', include(router.urls))
+    path('collections/sites/', include(router.urls))
 ]
