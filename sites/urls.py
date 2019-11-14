@@ -33,6 +33,9 @@ urlpatterns += [
     path('api.html', TemplateView.as_view(
     template_name='sites/swagger-api.html'
     ), name='swagger-ui'),
+<<<<<<< HEAD
     path('collections/', views.collection),
+=======
+>>>>>>> f8d707cde77809b0d1ef3bcaa02f41fd803d2cb1
     path('collections/sites/', include(router.urls))
 ]
