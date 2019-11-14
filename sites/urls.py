@@ -11,7 +11,7 @@ from . import views
 #router = routers.DefaultRouter()
 # Register sites api to use a custome router that complies with requirements of WFS3.
 #router = custom_routers.OGCRouter()
-router = routers.DefaultRouter(trailing_slash=False)
+router = routers.DefaultRouter()
 router.register(r'items', views.SitesViewSetApi, basename='apisite')
 
 #Assign paths for api info and conformance endpoints
@@ -33,9 +33,6 @@ urlpatterns += [
     path('api.html', TemplateView.as_view(
     template_name='sites/swagger-api.html'
     ), name='swagger-ui'),
-<<<<<<< HEAD
     path('collections/', views.collection),
-=======
->>>>>>> f8d707cde77809b0d1ef3bcaa02f41fd803d2cb1
     path('collections/sites/', include(router.urls))
 ]
