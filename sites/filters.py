@@ -89,20 +89,17 @@ class SiteFilter(filters.FilterSet):
     #operating = filters.DateTimeFilter(field_name='siteagency__from_date', lookup_expr='gte') & filters.DateTimeFilter(field_name='siteagency__to_date', lookup_expr='lte')
 
 
-
-class DateFilter(filters.FilterSet):
-#    datetime = filters.CharFilter(method='daterange_filter')
-    opbefore = filters.DateTimeFilter(field_name='siteagency__from_date', lookup_expr='lte')
-
-#    class Meta:
-#        model = SiteAgency
-#        fields = ['from_date', 'to_date']
-
-
 class InDateRangeFilter(BaseFilterBackend):
+    """
+    Filter results by a date range given based on the agency date ranges in the
+    database.  Returns sites that were in use by an agency at some point in the
+    period specified, and sites with no agencies.
+    """
     daterange_param = 'datetime'  # The URL query parameter which contains the bbox.
 
     def get_filter_datetime(self, request):
+        # Helper function to process the datetime interval provided and
+        #make it useful for filtering.
         daterange_string = request.query_params.get(self.daterange_param, None)
         if not daterange_string:
             return None
@@ -129,20 +126,33 @@ class InDateRangeFilter(BaseFilterBackend):
                 datetime2 = datetime1
             except:
                 datetime1, datetime2 = None
-        if datetime1 and datetime2:
-            x = [datetime1, datetime2]
+        # Return the values if they were valid and
+        # the second datetime was after the first
+        # Otherwise raise an error
+        if datetime1 and datetime2 and datetime2 >= datetime1:
+            return [datetime1, datetime2]
         else:
             raise ParseError('Invalid datetime string supplied for parameter {0}'.format(self.daterange_param))
 
-        return x
+        #return x
 
     def filter_queryset(self, request, queryset, view):
-
+        # Function to filter the dataset on the timerange
+        # Process the given interval
         daterange = self.get_filter_datetime(request)
+        # If there isn't a datetime parameter given then return the unaltered data
         if not daterange:
             return queryset
+        # Identify where sites have no agencies
+        noagency = queryset.filter(agencies__isnull=True)
+        # Filter for the time interval.
+        # the to_date must be after the start date provided (or null)
         queryset = queryset.filter(siteagency__to_date__gte=daterange[0]) | queryset.filter(siteagency__to_date__isnull=True)
+        # remove duplicates
         queryset = queryset.distinct()
-        print(daterange[1])
+        # AND the from_date date must be before the end date provided
         queryset = queryset.filter(siteagency__from_date__lte=daterange[1])
-        return queryset.filter(**{})
+        # Join the results from the daterange filter with the sites with no agencies
+        queryset = queryset.union(noagency)
+        # return the queryset
+        return queryset
