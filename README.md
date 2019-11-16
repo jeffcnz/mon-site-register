@@ -1,6 +1,9 @@
 ## A Prototype Web Based Monitoring Site Register For New Zealand.
 The project aims to prototype a web based national monitoring site register for New Zealand, allowing the documentation and discovery of monitoring sites.  Sites will be able to be added by registered agencies, with an overall administration and governance function applying over all agencies.  The site will not provide measurement data, but will be able to provide links to the data.
 
+## Further Information and Details.
+The [Wiki](https://github.com/jeffcnz/mon-site-register/wiki) provides more information about the features and use of the api, an overview of conformance with the WFS 3 standard and more background and discussion on the implementation and related considerations.
+
 ## Motivation
 The need for this kind of application has been identified as part of an environmental data infrastructure [Manaaki Whenua - Landcare Research 2018](https://www.landcareresearch.co.nz/__data/assets/pdf_file/0004/180796/Ritchie_2018_IDA_POC.pdf).  This infrastructure would aid in the realisation of services such as an environmental information brokering service [MfE 2017](https://www.mfe.govt.nz/sites/default/files/media/eidi_technical_report_2017.pdf) and environmental modelling and analysis [ELFIE](https://opengeospatial.github.io/ELFIE/).
 
@@ -26,11 +29,11 @@ This prototype aims to provide an OGCAPI Features compliant API service with a s
 - [Geo Django](https://docs.djangoproject.com/en/2.2/ref/contrib/gis/)
 - [PostGIS](https://postgis.net/)
 - [Django REST Framework](https://www.django-rest-framework.org/)
-- [Django REST Freamework GIS](https://github.com/djangonauts/django-rest-framework-gis)
+- [Django REST Framework GIS](https://github.com/djangonauts/django-rest-framework-gis)
 - [Bootstrap](https://getbootstrap.com/)
 
 ## Features  
-- OGCAPI - Features compliant api
+- OGCAPI - Features compliant api (work in progress)
 - Secure administration
 - Browsable API with content negotiation
 - Web based identifiers that could be easily registered to make them unique.
