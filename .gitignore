@@ -10,6 +10,7 @@
 **/db.json
 **/key_generator.py
 **/working.py
+*.Rhistory
 
 # Exceptions
 setup.md

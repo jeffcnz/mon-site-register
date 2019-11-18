@@ -4,7 +4,7 @@
 {% block request_info %}
 
 {% if type == 'FeatureCollection' %}
-<div class="FeatureCollection" vocab="http://schema.org/" typeof="Place">
+<div>
   <table class="table">
     <tr>
       <th>ID</th>
@@ -14,7 +14,7 @@
     </tr>
 
     {% for feature in features %}
-    <tr resource="#{% url 'apisite-detail' feature.id %}">
+    <tr class="Feature" vocab="http://schema.org/" typeof="Place" resource="#{% url 'apisite-detail' feature.id %}">
       <td property="identifier"><a href="{% url 'apisite-detail' feature.id %}">{{ feature.id }}</a></td>
       <td property="name">{{ feature.properties.site_name }}</td>
       <td property="latitude">{{ feature.geometry.coordinates.0 }}</td>
@@ -49,9 +49,9 @@
       <th>Type</th>
     </tr>
     {% for ident in properties.site_identifiers %}
-    <tr property="PropertyValue">
-      <td property="identifier">{{ ident.identifier }}</td>
-      <td property="name">{{ ident.identifier_name }}</td>
+    <tr property="sameAs" typeof="Property Value">
+      <td property="value">{{ ident.identifier }}</td>
+      <td property="propertyID">{{ ident.identifier_name }}</td>
     </tr>
     {% endfor %}
   </table>
@@ -64,8 +64,8 @@
       <th>To</th>
     </tr>
     {% for a in properties.site_agencies %}
-    <tr typeof=Organisation>
-      <td property="name"><a href="https://{{ a.agency.website }}">{{ a.agency_name }}</a></td>
+    <tr property=agent typeof=Organisation>
+      <td property="name"><a property="mainEntityOfPage" typeof="URL" href="https://{{ a.agency.website }}">{{ a.agency_name }}</a></td>
       <td property="startTime">{{ a.from_date }}</td>
       <td property="endTime">{{ a.to_date }}</td>
     </tr>
