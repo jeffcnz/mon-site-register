@@ -4,14 +4,47 @@ from .models import Site, SiteAgency, Agency, SiteIdentifiers, IdentifierType, A
 from rest_framework import serializers
 
 from rest_framework_gis.serializers import GeoFeatureModelSerializer
-
+from rest_framework.reverse import reverse
 
 class ApiInfoSerialiser(serializers.ModelSerializer):
+    # Add a links field
+    links = serializers.SerializerMethodField()
+
+    # Define the links to add
+    def get_links(self, obj):
+        # Get the request objects so that full urls can be used
+        request = self.context.get("request")
+        # get the media type requested
+        media_type = request.accepted_media_type.split(';')[0]
+        # Build the links
+        output_links = [
+            {"href": reverse('info', request=request),
+            "rel": "self",
+            "type": media_type,
+            "title": "This document."},
+            {"href": reverse('openapi-schema', request=request),
+            "rel": "service-desc",
+            "type": "application/vnd.oai.openapi",
+            "title": "The API definition"},
+            {"href": reverse('swagger-ui', request=request),
+            "rel": "service-doc",
+            "type": "text/html",
+            "title": "The API documentation"},
+            {"href": reverse('conformance', request=request),
+            "rel": "conformance",
+            "type": "application/json",
+            "title": "OGC API conformance classes implemented by this server"},
+            {"href": reverse('collections', request=request),
+            "rel": "data",
+            "type": "application/json",
+            "title": "Information about the feature collections"}
+            ]
+        return output_links #obj.get_absolute_url()
 
     class Meta:
         model = ApiInfo
         #TODO add links to other pages into the serialiser
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'links']
 
 
 class ApiConformanceSerialiser(serializers.ModelSerializer):

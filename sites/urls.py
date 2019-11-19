@@ -33,6 +33,6 @@ urlpatterns += [
     path('api.html', TemplateView.as_view(
     template_name='sites/swagger-api.html'
     ), name='swagger-ui'),
-    path('collections/', views.collection),
+    path('collections/', views.collection, name='collections'),
     path('collections/sites/', include(router.urls))
 ]

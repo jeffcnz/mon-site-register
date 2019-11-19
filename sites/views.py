@@ -26,7 +26,7 @@ class ApiInfoViewSet(APIView):
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         info = ApiInfo.objects.all()
-        serializer = ApiInfoSerialiser(info[0], many=False)
+        serializer = ApiInfoSerialiser(info[0], context={'request':request}, many=False)
         return Response(serializer.data)
 
 

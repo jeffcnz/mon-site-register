@@ -1,11 +1,19 @@
 {% extends "api_custom.html" %}
 
 {% block description %}
-  
+
 {% endblock %}
 
 
 {% block request_info %}
 <h1>{{ title }}</h1>
 <p>{{ description }}</p>
+<h5>Links</h5>
+{% for link in links %}
+
+<a class="btn btn-primary" href="{{ link.href }}" role="button">{{ link.title }}</a>
+
+{% endfor %}
+
+
 {% endblock %}
