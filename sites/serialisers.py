@@ -48,11 +48,21 @@ class ApiInfoSerialiser(serializers.ModelSerializer):
 
 
 class ApiConformanceSerialiser(serializers.ModelSerializer):
+    # Add a conformsTo field (WFS3 requirement)
+    conformsTo = serializers.SerializerMethodField()
+    # extract the url links from the database object to populate the field
+    def get_conformsTo(self, obj):
+        return [o.url for o in obj]
+
+    # Add a conformsTo_name field (for html rendering)
+    conformsTo_name = serializers.SerializerMethodField()
+    # extract the url links from the database object to populate the field
+    def get_conformsTo_name(self, obj):
+        return [o.name for o in obj]
 
     class Meta:
         model = ApiConformance
-        # TODO change so matches wfs3 requirements
-        fields = ['name', 'url']
+        fields = ['conformsTo', 'conformsTo_name']
 
 
 class AgencySerialiser(serializers.ModelSerializer):

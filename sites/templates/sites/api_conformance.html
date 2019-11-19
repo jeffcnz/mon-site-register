@@ -1,0 +1,22 @@
+{% extends "api_custom.html" %}
+
+{% load multifor %}
+
+
+{% block description %}
+
+{% endblock %}
+
+
+{% block request_info %}
+<h1>OGC Conformance Classes</h1>
+<p>OGC Conformance Classes that the server supports</p>
+<h5>Conformance Classes</h5>
+{% for conf in conformsTo; name in conformsTo_name %}
+
+<a class="btn btn-primary" href="{{ conf }}" role="button">{{ name }}</a>
+
+{% endfor %}
+
+
+{% endblock %}

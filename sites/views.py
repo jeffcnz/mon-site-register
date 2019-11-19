@@ -31,10 +31,12 @@ class ApiInfoViewSet(APIView):
 
 
 class ApiConformanceViewSet(APIView):
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer, ]
+    template_name = 'sites/api_conformance.html'
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
         conformance = ApiConformance.objects.all()
-        serializer = ApiConformanceSerialiser(conformance, many=True)
+        serializer = ApiConformanceSerialiser(conformance, many=False)
         return Response(serializer.data)
 
 

@@ -66,7 +66,8 @@ INSTALLED_APPS = [
     'leaflet',
     'guardian',
     'rest_framework',
-    'rest_framework_gis'
+    'rest_framework_gis',
+    #'multiforloop'
 ]
 
 MIDDLEWARE = [
