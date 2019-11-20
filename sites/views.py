@@ -10,7 +10,7 @@ from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes#, renderer_classes
 from rest_framework import permissions
 #from rest_framework_gis.filters import InBBoxFilter
-from .filters import InBBoxFilter, SiteFilter, InDateRangeFilter
+from .filters import InBBoxFilter, SiteFilter, InDateRangeFilter, ValidParameterFilter
 
 from django_filters import rest_framework as filters
 
@@ -59,7 +59,7 @@ class SitesViewSetApi(custom_viewsets.NoDeleteViewset):
     queryset = get_queryset
     serializer_class = SitesSerializer
     bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter, filters.DjangoFilterBackend, InDateRangeFilter)
+    filter_backends = (InBBoxFilter, filters.DjangoFilterBackend, InDateRangeFilter, ValidParameterFilter)
     filterset_class = SiteFilter
 
 

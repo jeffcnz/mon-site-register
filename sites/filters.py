@@ -156,3 +156,19 @@ class InDateRangeFilter(BaseFilterBackend):
         queryset = queryset.union(noagency)
         # return the queryset
         return queryset
+
+class ValidParameterFilter(BaseFilterBackend):
+    """
+    Filter checks whether the requested parameters are defined.
+    If any arent then it returns an error.
+    """
+
+
+    def filter_queryset(self,request, queryset, view):
+        valid_params = ['bbox', 'name', 'agency', 'datetime']
+        requested_parameters = request.query_params
+        print(requested_parameters)
+        if all(param in valid_params for param in requested_parameters):
+            return queryset
+        else:
+            raise ParseError('Invalid parameters provided.')
