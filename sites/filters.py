@@ -49,17 +49,29 @@ class InBBoxFilter(BaseFilterBackend):
     bbox_param = 'bbox'  # The URL query parameter which contains the bbox.
 
     def get_filter_bbox(self, request):
+        # Extract the bounding box strung
         bbox_string = request.query_params.get(self.bbox_param, None)
         if not bbox_string:
             return None
-
+        # Extract the coordinates from the bbox string, raise error if issue
         try:
             p1x, p1y, p2x, p2y = (float(n) for n in bbox_string.split(','))
         except ValueError:
             raise ParseError('Invalid bbox string supplied for parameter {0}'.format(self.bbox_param))
-
-        x = Polygon.from_bbox((p1x, p1y, p2x, p2y))
-        return x
+        # Check bounding box coordinate validity
+        # Check valid longitudes
+        if p1x > 180 or p1x < -180 or p2x > 180 or p2x < -180:
+            raise ParseError('Invalid longitude provided')
+        # Check valid latitudes
+        elif p1y > 90 or p1y < -90 or p2y > 90 or p2y < -90:
+            raise ParseError('Invalid latitude provided')
+        # Check valid bounding box
+        elif p1x > p2x or p1y > p2y:
+            raise ParseError('Invalid Bounding Box')
+        # If valid then process to a polygon and return
+        else:
+            x = Polygon.from_bbox((p1x, p1y, p2x, p2y))
+            return x
 
     def filter_queryset(self, request, queryset, view):
         filter_field = getattr(view, 'bbox_filter_field', None)
