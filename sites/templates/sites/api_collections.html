@@ -1,0 +1,47 @@
+{% extends "api_custom.html" %}
+
+{% block description %}
+
+{% endblock %}
+
+
+{% block request_info %}
+
+{% for link in links %}
+
+<a class="btn btn-primary" href="{{ link.href }}" role="button">{{ link.title }}</a>
+
+{% endfor %}
+
+<div>
+  <table class="table">
+    <tr>
+      <th>ID</th>
+      <th>Title</th>
+      <th>Description</th>
+      <th>Spatial Extent</th>
+      <th>Temporal Extent</th>
+      <th>Licence</th>
+    </tr>
+
+    {% for collection in collections %}
+    <tr>
+      <td>
+        <a href="{{collection.links.0.href}}">{{ collection.id }}</a>
+      </td>
+      <td>{{ collection.title }}</td>
+      <td>{{ collection.description }}</td>
+      <td>{{ collection.extent.spatial.bbox.0 }}</td>
+      <td>{{ collection.extent.temporal.interval.0 }}</td>
+      <td>
+        <a href="{{ collection.links.1.href }}">{{ collection.links.1.title }}</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </table>
+</div>
+
+
+
+
+{% endblock %}

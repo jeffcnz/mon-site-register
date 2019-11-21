@@ -1,21 +1,25 @@
 #from django.http import HttpResponse
 #from django.shortcuts import get_object_or_404, render
 #from django.views.generic import TemplateView
+import datetime
 from django.utils import dateparse
+from django.db.models import Min, Max
 
 from rest_framework import viewsets
 from rest_framework.renderers import TemplateHTMLRenderer, JSONRenderer
 from rest_framework.views import APIView
 from rest_framework.response import Response
-from rest_framework.decorators import api_view, permission_classes#, renderer_classes
+from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework import permissions
+
+from django.contrib.gis.db.models import Extent
 #from rest_framework_gis.filters import InBBoxFilter
 from .filters import InBBoxFilter, SiteFilter, InDateRangeFilter, ValidParameterFilter
 
 from django_filters import rest_framework as filters
 
 from .models import Site, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, ApiConformance
-from .serialisers import SitesSerializer, ApiInfoSerialiser, ApiConformanceSerialiser
+from .serialisers import SitesSerializer, ApiInfoSerialiser, ApiConformanceSerialiser, ApiCollectionsSerialiser
 #from . import info
 from . import custom_viewsets
 
@@ -47,7 +51,7 @@ class SitesViewSetApi(custom_viewsets.NoDeleteViewset):
         queryset = Site.objects.all()
         operating = self.request.query_params.get('operating', None)
         if operating is not None:
-            print(queryset)
+            #print(queryset)
             opdate = dateparse.parse_datetime(operating)
             queryset = queryset.filter(siteagency__to_date__gte = opdate) | queryset.filter(siteagency__to_date__isnull=True)
             queryset = queryset.distinct()
@@ -63,13 +67,46 @@ class SitesViewSetApi(custom_viewsets.NoDeleteViewset):
     filterset_class = SiteFilter
 
 
+class Collection(object):
+    def __init__(self, id, title, description, bbox, timerange):
+        self.id = id
+        self.title = title
+        self.description = description
+        self.bbox = bbox
+        self.timerange = timerange
 
 
-@api_view()
-@permission_classes([permissions.IsAuthenticatedOrReadOnly])
-def collection(request):
-    output = {"id": "sites", "title": "Environmental Monitoring Sites", "description": "Environmental monitoring sites"}
-    return Response(output)
+class ApiCollectionView(APIView):
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer, ]
+    template_name = 'sites/api_collections.html'
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    def get(self, request, format=None):
+        #collection = Site.objects.all()
+        bbox = Site.objects.aggregate(Extent('location'))
+        earliest = Site.objects.aggregate(Min('siteagency__from_date'))
+        latest_date = Site.objects.aggregate(Max('siteagency__to_date'))
+        no_to_date = Site.objects.filter(siteagency__to_date__isnull=True)
+        if len(no_to_date) > 0:
+            latest = None
+        else:
+            latest = latest_date['siteagency__to_date__max'].isoformat()
+        collection = Collection(id="sites",
+                        title="Environmental Monitoring Sites",
+                        description="Environmental Monitoring Sites",
+                        bbox = [list(bbox['location__extent'])],
+                        timerange = [[earliest['siteagency__from_date__min'].isoformat(),
+                            latest]])
+        #output = {"id": "sites", "title": "Environmental Monitoring Sites", "description": "Environmental monitoring sites"}
+        serializer = ApiCollectionsSerialiser(collection, context={'request':request})
+        return Response(serializer.data)
+
+#@api_view()
+#@permission_classes([permissions.IsAuthenticatedOrReadOnly])
+#@renderer_classes([TemplateHTMLRenderer, JSONRenderer, ])
+#def collection(request):
+
+#    output = {"id": "sites", "title": "Environmental Monitoring Sites", "description": "Environmental monitoring sites"}
+#    return Response(output, template_name = 'sites/api_collections.html')
 
 
 #class SitesViewSet(viewsets.ModelViewSet):

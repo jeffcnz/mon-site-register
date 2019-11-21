@@ -18,7 +18,7 @@ router.register(r'items', views.SitesViewSetApi, basename='apisite')
 urlpatterns = [
     path('', views.ApiInfoViewSet.as_view(), name='info'),
     path('conformance/', views.ApiConformanceViewSet.as_view(), name='conformance'),
-
+    path('collections/', views.ApiCollectionView.as_view(), name='collections'),
 ]
 
 # Setup type routing for html and json
@@ -33,6 +33,7 @@ urlpatterns += [
     path('api.html', TemplateView.as_view(
     template_name='sites/swagger-api.html'
     ), name='swagger-ui'),
-    path('collections/', views.collection, name='collections'),
+    #path('collections/', views.collection, name='collections'),
+
     path('collections/sites/', include(router.urls))
 ]
