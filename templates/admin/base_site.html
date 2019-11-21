@@ -1,5 +1,7 @@
 {% extends "admin/base.html" %}
 
+{% load tz %}
+
 {% block title %}{{ title }} | {{ site_title|default:_('NZEMN admin') }}{% endblock %}
 
 {% block branding %}
@@ -7,3 +9,9 @@
 {% endblock %}
 
 {% block nav-global %}{% endblock %}
+
+{% block content %}
+    {% timezone "Pacific/Auckland" %}
+        {{ block.super }}
+    {% endtimezone %}
+{% endblock %}

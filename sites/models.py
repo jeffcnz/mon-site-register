@@ -46,7 +46,7 @@ class Site(models.Model):
     # need to add a feature of interest, but how define???
     class Meta:
         ordering = ['pk']
-        
+
     def __str__(self):
         return self.site_name
 
@@ -55,8 +55,8 @@ class SiteAgency(models.Model):
     # Check / work through the on delete actions
     site = models.ForeignKey(Site, on_delete=models.CASCADE)#, related_name='site_agencies')
     agency = models.ForeignKey(Agency, on_delete=models.CASCADE, null=True)#, related_name='agency_to_site')
-    from_date = models.DateField('agency from date')
-    to_date = models.DateField('agency to date', null=True, blank=True)
+    from_date = models.DateTimeField('agency from date')
+    to_date = models.DateTimeField('agency to date', null=True, blank=True)
     #def __str__(self):
     #    return self.agency_name
 

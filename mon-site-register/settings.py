@@ -78,6 +78,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'sites.middleware.timezone.TimezoneMiddleware'
 ]
 
 ROOT_URLCONF = 'mon-site-register.urls'
@@ -163,7 +164,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'Pacific/Auckland'
+TIME_ZONE = 'Etc/GMT-12' #'Pacific/Auckland'
 
 DATE_FORMAT = 'd m Y'
 

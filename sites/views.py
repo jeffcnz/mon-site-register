@@ -2,7 +2,7 @@
 #from django.shortcuts import get_object_or_404, render
 #from django.views.generic import TemplateView
 import datetime
-from django.utils import dateparse
+from django.utils import dateparse, timezone
 from django.db.models import Min, Max
 
 from rest_framework import viewsets
@@ -89,12 +89,12 @@ class ApiCollectionView(APIView):
         if len(no_to_date) > 0:
             latest = None
         else:
-            latest = latest_date['siteagency__to_date__max'].isoformat()
+            latest = timezone.localtime(latest_date['siteagency__to_date__max']).isoformat()
         collection = Collection(id="sites",
                         title="Environmental Monitoring Sites",
                         description="Environmental Monitoring Sites",
                         bbox = [list(bbox['location__extent'])],
-                        timerange = [[earliest['siteagency__from_date__min'].isoformat(),
+                        timerange = [[timezone.localtime(earliest['siteagency__from_date__min']).isoformat(),
                             latest]])
         #output = {"id": "sites", "title": "Environmental Monitoring Sites", "description": "Environmental monitoring sites"}
         serializer = ApiCollectionsSerialiser(collection, context={'request':request})
