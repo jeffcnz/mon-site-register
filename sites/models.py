@@ -16,6 +16,7 @@ class ApiInfo(models.Model):
 
 
 class ApiConformance(models.Model):
+    api_id = models.ForeignKey(ApiInfo, on_delete=models.CASCADE, default=1)
     name = models.CharField(max_length=100)
     url = models.URLField()
     def __str__(self):

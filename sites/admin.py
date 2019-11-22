@@ -40,9 +40,14 @@ class ApiCollectionsInline(admin.TabularInline):
     extra = 0
 
 
+class ApiConformanceInline(admin.TabularInline):
+    model = ApiConformance
+    extra = 0
+
+
 class ApiInfoAdmin(admin.ModelAdmin):
 
-    inlines = [ApiCollectionsInline]
+    inlines = [ApiCollectionsInline, ApiConformanceInline]
 
 
 admin.site.register(Site, SiteAdmin)
@@ -53,4 +58,4 @@ admin.site.register(IdentifierType)
 #admin.site.register(SiteIdentifiers)
 
 admin.site.register(ApiInfo, ApiInfoAdmin)
-admin.site.register(ApiConformance)
+#admin.site.register(ApiConformance)

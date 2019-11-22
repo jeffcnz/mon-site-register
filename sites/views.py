@@ -39,7 +39,7 @@ class ApiConformanceViewSet(APIView):
     template_name = 'sites/api_conformance.html'
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]
     def get(self, request, format=None):
-        conformance = ApiConformance.objects.all()
+        conformance = ApiConformance.objects.filter(api_id=1)
         serializer = ApiConformanceSerialiser(conformance, many=False)
         return Response(serializer.data)
 
