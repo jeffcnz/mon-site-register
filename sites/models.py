@@ -7,11 +7,10 @@ from django.db.models.signals import post_save
 from django.dispatch import receiver
 
 #from guardian.shortcuts import assign_perm
-
-
 class ApiInfo(models.Model):
     title = models.CharField(max_length=200)
     description = models.TextField()
+
     def __str__(self):
         return self.title
 
@@ -21,6 +20,15 @@ class ApiConformance(models.Model):
     url = models.URLField()
     def __str__(self):
         return self.name
+
+
+class ApiCollections(models.Model):
+    id = models.CharField(max_length=100, primary_key=True)
+    api_id = models.ForeignKey(ApiInfo, on_delete=models.CASCADE)
+    title = models.CharField(max_length=200)
+    description = models.TextField()
+    def __str__(self):
+        return self.id
 
 
 class Agency(models.Model):

@@ -102,7 +102,7 @@ class ApiCollectionsSerialiser(serializers.Serializer):
                         "temporal":{"interval": obj.timerange}
                         },
                     "links":[{
-                        "href": reverse('collections', request=request) + "items",
+                        "href": reverse('apisite-list', request=request),
                         "rel": "items",
                         "type": "application/geo+json",
                         "title": "Environmental Monitoring Sites"
@@ -120,6 +120,64 @@ class ApiCollectionsSerialiser(serializers.Serializer):
                         "title": "CC By 4"
                         }]
                     }]
+        return output
+
+
+class ApiRootSerialiser(serializers.Serializer):
+
+    links = serializers.SerializerMethodField()
+    collection = serializers.SerializerMethodField()
+
+    def get_links(self, obj):
+        # Get the request objects so that full urls can be used
+        request = self.context.get("request")
+        # get the media type requested
+        media_type = request.accepted_media_type.split(';')[0]
+        # Build the links
+        output_links = [
+            {"href": reverse('api-root', request=request),
+            "rel": "self",
+            "type": media_type,
+            "title": "this document"},
+            {"href": reverse('api-root', request=request).rstrip('/') + ".json",
+            "rel": "alt",
+            "type": "application/json",
+            "title": "this document as json"},
+            {"href": reverse('api-root', request=request).rstrip('/') + ".html",
+            "rel": "alt",
+            "type": "text/html",
+            "title": "this document as html"}
+            ]
+        return output_links
+
+    def get_collection(self, obj):
+        request = self.context.get("request")
+        output = {"id": obj.id,
+                    "title": obj.title,
+                    "description": obj.description,
+                    "extent":
+                        {"spatial": {"bbox": obj.bbox},
+                        "temporal":{"interval": obj.timerange}
+                        },
+                    "links":[{
+                        "href": reverse('apisite-list', request=request),
+                        "rel": "items",
+                        "type": "application/geo+json",
+                        "title": "Environmental Monitoring Sites"
+                        },
+                        {
+                        "href": "http://creativecommons.org/licenses/by/4.0/",
+                        "rel": "licence",
+                        "type": "text/html",
+                        "title": "CC By 4"
+                        },
+                        {
+                        "href": "http://creativecommons.org/licenses/by/4.0/rdf",
+                        "rel": "licence",
+                        "type": "application/rdf+xml",
+                        "title": "CC By 4"
+                        }]
+                    }
         return output
 
 

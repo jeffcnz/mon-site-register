@@ -8,7 +8,7 @@ from . import widgets
 
 from sites.forms import GISEntryForm
 
-from .models import Site, Agency, IdentifierType, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, ApiConformance
+from .models import Site, Agency, IdentifierType, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, ApiConformance, ApiCollections
 
 #from leaflet.admin import LeafletGeoAdmin
 
@@ -27,26 +27,22 @@ class IdentifiersInline(admin.TabularInline):
     model = SiteIdentifiers
     extra = 0
 
-class SiteAdmin(admin.ModelAdmin):
-#class SiteAdmin(admin.OSMGeoAdmin):
-    #default_lon = 173.2840
-    #default_lat = -41.2706
-    #default_lon = 19289886.64
-    #default_lat = -5052337.41
 
-    #default_zoom = 6
-    #formfield_overrides = {
-        #models.PointField: {'widget': Textarea}
-    #    models.PointField: {'widget': widgets.LatLongWidget}
-    #}
+class SiteAdmin(admin.ModelAdmin):
+
     form = GISEntryForm
 
-    #fieldsets = [
-    #    (None,               {'fields': ['site_name']}),
-        #('Location', {'fields': ['location'], 'classes': ['collapse']}),
-    #    ('Location', {'fields': ['location']}),
-    #]
     inlines = [IdentifiersInline, AgenciesInline, OperationInline]
+
+
+class ApiCollectionsInline(admin.TabularInline):
+    model = ApiCollections
+    extra = 0
+
+
+class ApiInfoAdmin(admin.ModelAdmin):
+
+    inlines = [ApiCollectionsInline]
 
 
 admin.site.register(Site, SiteAdmin)
@@ -56,5 +52,5 @@ admin.site.register(IdentifierType)
 #admin.site.register(SiteOperation)
 #admin.site.register(SiteIdentifiers)
 
-admin.site.register(ApiInfo)
+admin.site.register(ApiInfo, ApiInfoAdmin)
 admin.site.register(ApiConformance)

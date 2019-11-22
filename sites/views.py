@@ -18,8 +18,8 @@ from .filters import InBBoxFilter, SiteFilter, InDateRangeFilter, ValidParameter
 
 from django_filters import rest_framework as filters
 
-from .models import Site, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, ApiConformance
-from .serialisers import SitesSerializer, ApiInfoSerialiser, ApiConformanceSerialiser, ApiCollectionsSerialiser
+from .models import Site, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, ApiConformance, ApiCollections
+from .serialisers import SitesSerializer, ApiInfoSerialiser, ApiConformanceSerialiser, ApiCollectionsSerialiser, ApiRootSerialiser
 #from . import info
 from . import custom_viewsets
 
@@ -90,15 +90,47 @@ class ApiCollectionView(APIView):
             latest = None
         else:
             latest = timezone.localtime(latest_date['siteagency__to_date__max']).isoformat()
-        collection = Collection(id="sites",
-                        title="Environmental Monitoring Sites",
-                        description="Environmental Monitoring Sites",
+        coll = ApiCollections.objects.filter(id='sites').first()
+        #coll['bbox']="test"
+        print(coll.id)
+        collection = Collection(id=coll.id,
+                        title=coll.title,
+                        description=coll.description,
                         bbox = [list(bbox['location__extent'])],
                         timerange = [[timezone.localtime(earliest['siteagency__from_date__min']).isoformat(),
                             latest]])
         #output = {"id": "sites", "title": "Environmental Monitoring Sites", "description": "Environmental monitoring sites"}
         serializer = ApiCollectionsSerialiser(collection, context={'request':request})
         return Response(serializer.data)
+
+
+class ApiRootView(APIView):
+    renderer_classes = [TemplateHTMLRenderer, JSONRenderer, ]
+    template_name = 'sites/api_root.html'
+    permission_classes = [permissions.IsAuthenticatedOrReadOnly]
+    def get(self, request, format=None):
+        #collection = Site.objects.all()
+        bbox = Site.objects.aggregate(Extent('location'))
+        earliest = Site.objects.aggregate(Min('siteagency__from_date'))
+        latest_date = Site.objects.aggregate(Max('siteagency__to_date'))
+        no_to_date = Site.objects.filter(siteagency__to_date__isnull=True)
+        if len(no_to_date) > 0:
+            latest = None
+        else:
+            latest = timezone.localtime(latest_date['siteagency__to_date__max']).isoformat()
+        coll = ApiCollections.objects.filter(id='sites').first()
+        #coll['bbox']="test"
+        print(coll.id)
+        collection = Collection(id=coll.id,
+                        title=coll.title,
+                        description=coll.description,
+                        bbox = [list(bbox['location__extent'])],
+                        timerange = [[timezone.localtime(earliest['siteagency__from_date__min']).isoformat(),
+                            latest]])
+        #output = {"id": "sites", "title": "Environmental Monitoring Sites", "description": "Environmental monitoring sites"}
+        serializer = ApiRootSerialiser(collection, context={'request':request})
+        return Response(serializer.data)
+
 
 #@api_view()
 #@permission_classes([permissions.IsAuthenticatedOrReadOnly])
