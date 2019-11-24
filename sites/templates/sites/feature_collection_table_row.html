@@ -1,0 +1,6 @@
+<tr class="Feature" vocab="http://schema.org/" typeof="Place" resource="#{% url 'apisite-detail' feature.id %}">
+  <td property="identifier"><a href="{% url 'apisite-detail' feature.id %}">{{ feature.id }}</a></td>
+  <td property="name">{{ feature.properties.site_name }}</td>
+  <td property="latitude">{{ feature.geometry.coordinates.0 }}</td>
+  <td property="longitude">{{ feature.geometry.coordinates.1 }}</td>
+</tr>

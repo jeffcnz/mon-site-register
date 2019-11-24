@@ -11,6 +11,7 @@ from rest_framework.views import APIView
 from rest_framework.response import Response
 from rest_framework.decorators import api_view, permission_classes, renderer_classes
 from rest_framework import permissions
+#from rest_framework.pagination import LimitOffsetPagination
 
 from django.contrib.gis.db.models import Extent
 #from rest_framework_gis.filters import InBBoxFilter
@@ -22,7 +23,8 @@ from .models import Site, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, A
 from .serialisers import SitesSerializer, ApiInfoSerialiser, ApiConformanceSerialiser, ApiCollectionsSerialiser, ApiRootSerialiser
 #from . import info
 from . import custom_viewsets
-
+from .pagination import OGCFeaturesPagination
+from .renderers import GeoJSONRenderer
 
 class ApiInfoViewSet(APIView):
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer, ]
@@ -57,11 +59,13 @@ class SitesViewSetApi(custom_viewsets.NoDeleteViewset):
             queryset = queryset.distinct()
         return queryset
 
-    renderer_classes = [TemplateHTMLRenderer, JSONRenderer, ]
+    renderer_classes = [TemplateHTMLRenderer, GeoJSONRenderer, ]
     template_name = 'sites/api_sitelist.html'
     #queryset = Site.objects.all()
     queryset = get_queryset
     serializer_class = SitesSerializer
+    #pagination_class = LimitOffsetPagination
+    pagination_class = OGCFeaturesPagination
     bbox_filter_field = 'location'
     filter_backends = (InBBoxFilter, filters.DjangoFilterBackend, InDateRangeFilter, ValidParameterFilter)
     filterset_class = SiteFilter
