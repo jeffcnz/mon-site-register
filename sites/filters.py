@@ -177,7 +177,7 @@ class ValidParameterFilter(BaseFilterBackend):
 
 
     def filter_queryset(self,request, queryset, view):
-        valid_params = ['bbox', 'name', 'agency', 'datetime', 'limit', 'offset']
+        valid_params = ['bbox', 'name', 'agency', 'datetime', 'limit', 'offset', 'format']
         requested_parameters = request.query_params
         #print(requested_parameters)
         if all(param in valid_params for param in requested_parameters):

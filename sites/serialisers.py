@@ -3,8 +3,10 @@ from django.db import transaction
 from .models import Site, SiteAgency, Agency, SiteIdentifiers, IdentifierType, ApiInfo, ApiConformance
 from rest_framework import serializers
 
-from rest_framework_gis.serializers import GeoFeatureModelSerializer
+#from rest_framework_gis.serializers import GeoFeatureModelSerializer
 from rest_framework.reverse import reverse
+from rest_framework.utils.urls import replace_query_param
+from .custom_serializers import OGCGeoFeatureModelSerializer
 
 class ApiInfoSerialiser(serializers.ModelSerializer):
     # Add a links field
@@ -216,11 +218,12 @@ class SiteIdentifiersSerialiser(serializers.ModelSerializer):
         fields = ['identifier_name', 'identifier']
 
 
-class SitesSerializer(GeoFeatureModelSerializer):
+class SitesSerializer(OGCGeoFeatureModelSerializer):
     """ A class to serialize sites as GeoJSON compatible data """
     #site_agencies = AgencySerialiser(many=True, read_only=True)
     site_agencies = SiteAgencySerialiser(source="siteagency_set", many=True)
     site_identifiers = SiteIdentifiersSerialiser(source="siteidentifiers_set", many=True)
+
 
     class Meta:
         model = Site
