@@ -35,13 +35,13 @@ class OGCGeoFeatureModelListSerializer(ListSerializer):
             },
             {
             "href": replace_query_param(url, 'format', 'json'),
-            "rel": "alt",
+            "rel": "alternate",
             "type": "application/geo+json",
             "title": "this document as json"
             },
             {
             "href": replace_query_param(url, 'format', 'html'),
-            "rel": "alt",
+            "rel": "alternate",
             "type": "text/html",
             "title": "this document as html"
             }
@@ -174,13 +174,13 @@ class OGCGeoFeatureModelSerializer(ModelSerializer):
                 },
                 {
                 "href": replace_query_param(url, 'format', 'json'),
-                "rel": "alt",
+                "rel": "alternate",
                 "type": "application/geo+json",
                 "title": "this document as json"
                 },
                 {
                 "href": replace_query_param(url, 'format', 'html'),
-                "rel": "alt",
+                "rel": "alternate",
                 "type": "text/html",
                 "title": "this document as html"
                 }
