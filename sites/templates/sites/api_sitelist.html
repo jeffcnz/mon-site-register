@@ -2,50 +2,133 @@
 {% extends "api_custom.html" %}
 
 {% block request_info %}
-
-{% if results %}
-  {# Paginated results #}
-  {% block paginated_feature_collection %}
-  <a href="{{ previous }}" class="previous">&laquo; Previous</a>
-
-  <a href="{{ next }}" class="next">Next &raquo;</a>
-  <p>Paginated results</p>
-  <div>
-    <table class="table">
-      {% include "sites/feature_collection_table_headings.html" %}
-      {% for feature in results.features %}
-        {% include "sites/feature_collection_table_row.html" %}
-      {% endfor %}
-    </table>
+<div class="btn-toolbar justify-content-between" role="toolbar">
+  <div class="btn-group" role="group">
+    <a class="btn btn-primary" href="{% if links.4.href == None %} # {% else %} {{ links.4.href }} {% endif %}" role="button">&laquo; Previous Page</a>
+  </div>
+  <div class="btn-group" role="group">
+    <a class="btn btn-primary" href="{{ links.1.href }}" role="button">JSON</a>
+  </div>
+  <div class="btn-group" role="group">
+    <a class="btn btn-primary" href="{% if links.3.href == None %} # {% else %} {{ links.3.href }} {% endif %}" role="button">Next Page &raquo;</a>
   </div>
 
-  {% endblock %}
+</div>
 
 
 
 
-
-
-{% else %}
-  {# Pagination wasn't used so render results #}
-  {% if type == 'FeatureCollection' %}
+{% if type == 'FeatureCollection' %}
   {% block feature_collection %}
   <div>
     <table class="table">
-
-    {% include "sites/feature_collection_table_headings.html" %}
+      <tr>
+        <th>ID</th>
+        <th>Name</th>
+        <th>Latitude</th>
+        <th>Longitude</th>
+        <th></th>
+        <th></th>
+      </tr>
 
     {% for feature in features %}
-      {% include "sites/feature_collection_table_row.html" %}
+      <tr class="Feature" vocab="http://schema.org/" typeof="Place" resource="#{% url 'apisite-detail' feature.id %}">
+        <td property="identifier"><a href="{% url 'apisite-detail' feature.id %}">{{ feature.id }}</a></td>
+        <td property="name">{{ feature.properties.site_name }}</td>
+        <td property="latitude">{{ feature.geometry.coordinates.0 }}</td>
+        <td property="longitude">{{ feature.geometry.coordinates.1 }}</td>
+        <td>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#agencyModal{{feature.id}}">
+            Agency Info
+          </button>
+          <!-- Agencies Modal -->
+          <div class="modal fade" id="agencyModal{{feature.id}}" tabindex="-1" role="dialog" aria-labelledby="agencyModalTitle{{feature.id}}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="agencyModalTitle{{feature.id}}">ID {{feature.id}} - {{feature.properties.site_name}} - Operating Agencies</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table class="table">
+                    <tr>
+                      <th>Agency</th>
+                      <th>From</th>
+                      <th>To</th>
+                    </tr>
+                    {% for a in feature.properties.site_agencies %}
+                    <tr property=agent typeof=Organisation>
+                      <td property="name"><a property="mainEntityOfPage" typeof="URL" href="https://{{ a.agency.website }}">{{ a.agency_name }}</a></td>
+                      <td property="startTime">{{ a.from_date }}</td>
+                      <td property="endTime">{{ a.to_date }}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+
+
+                </div>
+                <!--div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div-->
+              </div>
+            </div>
+          </div>
+        </td>
+        <td>
+          <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#identifierModal{{feature.id}}">
+            Identifiers
+          </button>
+          <!-- Identifiers Modal -->
+          <div class="modal fade" id="identifierModal{{feature.id}}" tabindex="-1" role="dialog" aria-labelledby="identifierModalTitle{{feature.id}}" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+              <div class="modal-content">
+                <div class="modal-header">
+                  <h4 class="modal-title" id="identifierModalTitle{{feature.id}}">ID {{feature.id}} - {{feature.properties.site_name}} - Other Identifiers</h4>
+                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                  </button>
+                </div>
+                <div class="modal-body">
+                  <table class="table">
+                    <tr>
+                      <th>Type</th>
+                      <th>Identifier</th>
+                    </tr>
+                    {% for ident in feature.properties.site_identifiers %}
+                    <tr property="sameAs" typeof="PropertyValue">
+                      <td property="propertyID">{{ ident.identifier_name }}</td>
+                      <td property="value">{{ ident.identifier }}</td>
+                    </tr>
+                    {% endfor %}
+                  </table>
+                </div>
+                <!--div class="modal-footer">
+                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                  <button type="button" class="btn btn-primary">Save changes</button>
+                </div-->
+              </div>
+            </div>
+          </div>
+        </td>
+      </tr>
+
+
+
     {% endfor %}
 
     </table>
+
+
+
   </div>
 
   {% endblock %}
 
 
-  {% elif type == 'Feature' %}
+{% elif type == 'Feature' %}
   {% block feature %}
   <div class="Feature" vocab="http://schema.org/" typeof="Place" resource="#{% url 'apisite-detail' id %}">
     <table class="table">
@@ -94,6 +177,6 @@
     </table>
   </div>
   {% endblock %}
-  {% endif %}
 {% endif %}
+
 {% endblock %}
