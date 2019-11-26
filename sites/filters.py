@@ -87,7 +87,14 @@ class InBBoxFilter(BaseFilterBackend):
         bbox = self.get_filter_bbox(request)
         if not bbox:
             return queryset
-        return queryset.filter(Q(**{'%s__%s' % (filter_field, geoDjango_filter): bbox}))
+        # Identify where sites have no locations
+        nolocation = queryset.filter(location__isnull=True)
+        # Identify sites in the bounding box
+        queryset = queryset.filter(Q(**{'%s__%s' % (filter_field, geoDjango_filter): bbox}))
+        # Join the results from the bbox filter with the sites with no locations
+        queryset = queryset.union(nolocation)
+        # return the queryset
+        return queryset
 # backward compatibility
 InBBOXFilter = InBBoxFilter
 

@@ -4,6 +4,7 @@ from django.views.generic import TemplateView
 #from rest_framework import routers
 from rest_framework.urlpatterns import format_suffix_patterns
 from rest_framework.schemas import get_schema_view
+from rest_framework.renderers import JSONOpenAPIRenderer
 
 from . import views
 #from . import custom_routers
@@ -31,7 +32,8 @@ urlpatterns = format_suffix_patterns(urlpatterns)
 urlpatterns += [
     path('api/', get_schema_view(
     title="NZEMS",
-    description="A prototype New Zealand Environmental Monitoring Site Register."
+    description="A prototype New Zealand Environmental Monitoring Site Register.",
+    renderer_classes=[JSONOpenAPIRenderer]
     ), name='openapi-schema'),
     path('api.html', TemplateView.as_view(
     template_name='sites/swagger-api.html'
