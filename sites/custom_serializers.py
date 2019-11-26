@@ -6,7 +6,7 @@ from django.contrib.gis.geos import Polygon
 from rest_framework.serializers import ModelSerializer, ListSerializer, LIST_SERIALIZER_KWARGS
 from rest_framework.utils.urls import replace_query_param
 from rest_framework_gis.fields import GeometryField, GeometrySerializerMethodField  # noqa
-
+from rest_framework.reverse import reverse
 
 class GeoModelSerializer(ModelSerializer):
     """
@@ -183,6 +183,18 @@ class OGCGeoFeatureModelSerializer(ModelSerializer):
                 "rel": "alternate",
                 "type": "text/html",
                 "title": "this document as html"
+                },
+                {
+                "href": reverse('api-root', request=request).rstrip('/') + ".json",
+                "rel": "collection",
+                "type": "application/json",
+                "title": "the feature collection as json"
+                },
+                {
+                "href": reverse('api-root', request=request).rstrip('/') + ".html",
+                "rel": "collection",
+                "type": "text/html",
+                "title": "the feature collection as html"
                 }
                 ]
 
