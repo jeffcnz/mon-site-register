@@ -3,15 +3,19 @@
 
 {% block request_info %}
 <div class="btn-toolbar justify-content-between" role="toolbar">
+  {% if links.4 %}
   <div class="btn-group" role="group">
     <a class="btn btn-primary" href="{% if links.4.href == None %} # {% else %} {{ links.4.href }} {% endif %}" role="button">&laquo; Previous Page</a>
   </div>
+  {% endif %}
   <div class="btn-group" role="group">
     <a class="btn btn-primary" href="{{ links.1.href }}" role="button">JSON</a>
   </div>
+  {% if links.3 %}
   <div class="btn-group" role="group">
     <a class="btn btn-primary" href="{% if links.3.href == None %} # {% else %} {{ links.3.href }} {% endif %}" role="button">Next Page &raquo;</a>
   </div>
+  {% endif %}
 
 </div>
 
