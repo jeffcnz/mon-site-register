@@ -14,15 +14,15 @@ from . import routers
 # Register sites api to use a custome router that complies with requirements of WFS3.
 #router = custom_routers.OGCRouter()
 #router = routers.DefaultRouter()
-router = routers.SitesRouter()
+router = routers.SitesRouter(trailing_slash=False)
 router.register(r'items', views.SitesViewSetApi, basename='apisite')
 
 #Assign paths for collection and conformance endpoints
 urlpatterns = [
     path('', views.ApiInfoViewSet.as_view(), name='info'),
-    path('conformance/', views.ApiConformanceViewSet.as_view(), name='conformance'),
-    path('collections/', views.ApiCollectionView.as_view(), name='collections'),
-    path('collections/sites/', views.ApiRootView.as_view(), name='api-root')
+    path('conformance', views.ApiConformanceViewSet.as_view(), name='conformance'),
+    path('collections', views.ApiCollectionView.as_view(), name='collections'),
+    path('collections/sites', views.ApiRootView.as_view(), name='api-root')
 ]
 
 # Setup type routing for html and json
@@ -30,7 +30,7 @@ urlpatterns = format_suffix_patterns(urlpatterns)
 
 # Add the api info in swagger format for html or jason otherwise.
 urlpatterns += [
-    path('api/', get_schema_view(
+    path('api', get_schema_view(
     title="NZEMS",
     description="A prototype New Zealand Environmental Monitoring Site Register.",
     renderer_classes=[JSONOpenAPIRenderer]

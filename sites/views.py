@@ -27,6 +27,11 @@ from .pagination import OGCFeaturesPagination
 from .renderers import GeoJSONRenderer
 
 class ApiInfoViewSet(APIView):
+    """
+    The landing page provides links to the API definition,
+    the Conformance statements and the metadata about the feature data
+    in this dataset.
+    """
     renderer_classes = [TemplateHTMLRenderer, JSONRenderer, ]
     template_name = 'sites/api_info.html'
     permission_classes = [permissions.IsAuthenticatedOrReadOnly]

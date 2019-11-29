@@ -50,6 +50,7 @@ def get_secret(setting, secrets=secrets):
 
 ALLOWED_HOSTS = []
 
+APPEND_SLASH = False
 
 # Application definition
 
