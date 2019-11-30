@@ -70,10 +70,10 @@ class SiteAgency(models.Model):
     #    return self.agency_name
 
 
-class SiteOperation(models.Model):
-    site = models.ForeignKey(Site, on_delete=models.SET_NULL, null=True)
-    from_date = models.DateField('operational from date')
-    to_date = models.DateField('operational to date', null=True, blank=True)
+#class SiteOperation(models.Model):
+#    site = models.ForeignKey(Site, on_delete=models.SET_NULL, null=True)
+#    from_date = models.DateField('operational from date')
+#    to_date = models.DateField('operational to date', null=True, blank=True)
     #def __str__(self):
     #    return self.from_date
 

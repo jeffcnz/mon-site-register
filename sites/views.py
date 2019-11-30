@@ -19,7 +19,7 @@ from .filters import InBBoxFilter, SiteFilter, InDateRangeFilter, ValidParameter
 
 from django_filters import rest_framework as filters
 
-from .models import Site, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, ApiConformance, ApiCollections
+from .models import Site, SiteAgency, SiteIdentifiers, ApiInfo, ApiConformance, ApiCollections
 from .serialisers import SitesSerializer, ApiInfoSerialiser, ApiConformanceSerialiser, ApiCollectionsSerialiser, ApiRootSerialiser
 #from . import info
 from . import custom_viewsets

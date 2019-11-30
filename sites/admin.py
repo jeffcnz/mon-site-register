@@ -8,14 +8,14 @@ from . import widgets
 
 from sites.forms import GISEntryForm
 
-from .models import Site, Agency, IdentifierType, SiteAgency, SiteOperation, SiteIdentifiers, ApiInfo, ApiConformance, ApiCollections
+from .models import Site, Agency, IdentifierType, SiteAgency, SiteIdentifiers, ApiInfo, ApiConformance, ApiCollections
 
 #from leaflet.admin import LeafletGeoAdmin
 
 
-class OperationInline(admin.TabularInline):
-    model = SiteOperation
-    extra = 0
+#class OperationInline(admin.TabularInline):
+#    model = SiteOperation
+#    extra = 0
 
 
 class AgenciesInline(admin.TabularInline):
@@ -32,7 +32,7 @@ class SiteAdmin(admin.ModelAdmin):
 
     form = GISEntryForm
 
-    inlines = [IdentifiersInline, AgenciesInline, OperationInline]
+    inlines = [IdentifiersInline, AgenciesInline]
 
 
 class ApiCollectionsInline(admin.TabularInline):
