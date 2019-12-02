@@ -55,7 +55,9 @@ class IdentifiersInline(admin.TabularInline):
 
 class SiteAdmin(admin.ModelAdmin):
 #class SiteAdmin(nested_admin.NestedModelAdmin):
-
+    list_display = ['site_name']
+    list_filter = ['agencies']
+    search_fields = ['site_name']
     form = GISEntryForm
 
     inlines = [IdentifiersInline, AgenciesInline]
@@ -75,6 +77,10 @@ class ApiInfoAdmin(admin.ModelAdmin):
 
     inlines = [ApiCollectionsInline, ApiConformanceInline]
 
+class AgencyMeasurementAdmin(admin.ModelAdmin):
+    list_display = ['agency', 'observed_property', 'agency_measurement_name']
+    list_filter = ['agency', 'observed_property']
+    search_fields = ['observed_property', 'agency_measurement_name']
 
 admin.site.register(Site, SiteAdmin)
 admin.site.register(Agency)
@@ -83,7 +89,7 @@ admin.site.register(IdentifierType)
 #admin.site.register(SiteOperation)
 #admin.site.register(SiteIdentifiers)
 admin.site.register(ObservedProperty)
-admin.site.register(AgencyMeasurement)
+admin.site.register(AgencyMeasurement, AgencyMeasurementAdmin)
 admin.site.register(SiteAgency, SiteAgencyAdmin)
 admin.site.register(ApiInfo, ApiInfoAdmin)
 #admin.site.register(ApiConformance)
