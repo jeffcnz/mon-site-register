@@ -7,8 +7,12 @@ from django.contrib.gis.db import models
 from . import widgets
 
 from sites.forms import GISEntryForm
+#import nested_admin
 
-from .models import Site, Agency, IdentifierType, SiteAgency, SiteIdentifiers, ApiInfo, ApiConformance, ApiCollections
+from .models import (Site, Agency, IdentifierType,
+                    SiteAgency, SiteIdentifiers, ApiInfo,
+                    ApiConformance, ApiCollections, SiteAgencyMeasurement,
+                    AgencyMeasurement, ObservedProperty)
 
 #from leaflet.admin import LeafletGeoAdmin
 
@@ -16,19 +20,41 @@ from .models import Site, Agency, IdentifierType, SiteAgency, SiteIdentifiers, A
 #class OperationInline(admin.TabularInline):
 #    model = SiteOperation
 #    extra = 0
+#class AgencyMeasurementInline(nested_admin.NestedTabularInline):
+#    model = SiteAgencyMeasurement
+#    sortable_field_name = 'agency_measurement'
+#    extra = 0
 
 
-class AgenciesInline(admin.TabularInline):
-    model = SiteAgency
+class SiteAgencyMeasurementInline(admin.TabularInline):
+    model = SiteAgencyMeasurement
     extra = 0
 
 
+class SiteAgencyAdmin(admin.ModelAdmin):
+    list_display = ('agency', 'site')
+    list_filter = ['agency']
+    search_fields = ['site__site_name']
+    inlines = [SiteAgencyMeasurementInline]
+
+
+class AgenciesInline(admin.TabularInline):
+#class AgenciesInline(nested_admin.NestedStackedInline):
+    model = SiteAgency
+    #sortable_field_name = 'agency'
+    extra = 0
+    #inlines = [AgencyMeasurementInline]
+
+
 class IdentifiersInline(admin.TabularInline):
+#class IdentifiersInline(nested_admin.NestedTabularInline):
     model = SiteIdentifiers
+    #sortable_field_name = 'identifier_type'
     extra = 0
 
 
 class SiteAdmin(admin.ModelAdmin):
+#class SiteAdmin(nested_admin.NestedModelAdmin):
 
     form = GISEntryForm
 
@@ -56,6 +82,8 @@ admin.site.register(IdentifierType)
 #admin.site.register(SiteAgency)
 #admin.site.register(SiteOperation)
 #admin.site.register(SiteIdentifiers)
-
+admin.site.register(ObservedProperty)
+admin.site.register(AgencyMeasurement)
+admin.site.register(SiteAgency, SiteAgencyAdmin)
 admin.site.register(ApiInfo, ApiInfoAdmin)
 #admin.site.register(ApiConformance)

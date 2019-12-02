@@ -4,6 +4,7 @@ django-guardian
 djangorestframework
 djangorestframework-gis
 django-filter
+# django-nested-admin
 pyyaml
 uritemplate
 gunicorn

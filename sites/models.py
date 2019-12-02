@@ -64,12 +64,48 @@ class SiteAgency(models.Model):
     # Check / work through the on delete actions
     site = models.ForeignKey(Site, on_delete=models.CASCADE)#, related_name='site_agencies')
     agency = models.ForeignKey(Agency, on_delete=models.CASCADE, null=True)#, related_name='agency_to_site')
-    from_date = models.DateTimeField('agency from date')
+    from_date = models.DateTimeField('agency from date', null=True, blank=True)
     to_date = models.DateTimeField('agency to date', null=True, blank=True)
     #def __str__(self):
     #    return self.agency_name
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['site', 'agency'], name='unique site agency')
+        ]
+    def __str__(self):
+        return "%s - %s" % (self.agency.agency_name, self.site.site_name)
+
+class ObservedProperty(models.Model):
+    observed_property_name = models.CharField(max_length=200, unique=True)
+    observed_property_url = models.CharField(max_length=400, null=True, blank=True)
+
+    def __str__(self):
+        return self.observed_property_name
+
+class AgencyMeasurement(models.Model):
+    agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
+    agency_measurement_name = models.CharField(max_length=200)
+    observed_property = models.ForeignKey(ObservedProperty, on_delete=models.CASCADE)
+    # Add units, statistics, type of measurement
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['agency', 'agency_measurement_name'], name='unique agency measurements')
+        ]
+
+    def __str__(self):
+        return "%s - %s " %(self.agency.agency_name, self.agency_measurement_name)
 
 
+class SiteAgencyMeasurement(models.Model):
+    site_agency = models.ForeignKey(SiteAgency, on_delete=models.CASCADE)
+    agency_measurement = models.ForeignKey(AgencyMeasurement, on_delete=models.CASCADE)
+    result_url = models.CharField(max_length=400)
+    meas_from = models.DateTimeField('site agency measurement from date', null=True, blank=True)
+    meas_to = models.DateTimeField('site agency measurement to date', null=True, blank=True)
+    class Meta:
+        constraints = [
+            models.UniqueConstraint(fields=['site_agency', 'agency_measurement'], name='unique site agency measurement')
+        ]
 #class SiteOperation(models.Model):
 #    site = models.ForeignKey(Site, on_delete=models.SET_NULL, null=True)
 #    from_date = models.DateField('operational from date')

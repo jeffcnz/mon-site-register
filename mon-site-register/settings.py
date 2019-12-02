@@ -68,6 +68,7 @@ INSTALLED_APPS = [
     'guardian',
     'rest_framework',
     'rest_framework_gis',
+    #'nested_admin'
     #'multiforloop'
 ]
 

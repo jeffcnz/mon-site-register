@@ -28,6 +28,7 @@ urlpatterns = [
     path('', RedirectView.as_view(url='/nzemn/')),
     path('nzemn/', include('sites.urls')),
     path('admin/', admin.site.urls),
+    #path('nested_admin/', include('nested_admin.urls'))
     #path('api/', include(router.urls)),
     #path('api/', include('sites.urls')),
     #path('api-auth/', include('rest_framework.urls', namespace='rest_framework'))

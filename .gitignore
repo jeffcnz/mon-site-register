@@ -11,6 +11,7 @@
 **/key_generator.py
 **/working.py
 *.Rhistory
+**/staticfiles
 
 # Exceptions
 setup.md
