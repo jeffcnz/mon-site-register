@@ -1,6 +1,8 @@
 from django.db import transaction
 
-from .models import Site, SiteAgency, Agency, SiteIdentifiers, IdentifierType, ApiInfo, ApiConformance
+from .models import (Site, SiteAgency, Agency,
+                    SiteIdentifiers, IdentifierType, SiteAgencyMeasurement,
+                    ApiInfo, ApiConformance)
 from rest_framework import serializers
 
 #from rest_framework_gis.serializers import GeoFeatureModelSerializer
@@ -190,15 +192,24 @@ class AgencySerialiser(serializers.ModelSerializer):
         fields = ['agency_name', 'website']
         #read_only_fields = ['agency_name', 'website']
 
+class SiteAgencyMeasurementSerialiser(serializers.ModelSerializer):
+    measurement = serializers.CharField(source='agency_measurement.observed_property.observed_property_name')
+    measurement_url = serializers.CharField(source='agency_measurement.observed_property.observed_property_url')
+
+    class Meta:
+        model = SiteAgencyMeasurement
+        fields = ['measurement', 'measurement_url', 'result_url', 'meas_from', 'meas_to']
+
 
 class SiteAgencySerialiser(serializers.ModelSerializer):
     #agency = AgencySerialiser()
     agency_name = serializers.CharField(source='agency.agency_name')
     website = serializers.CharField(source='agency.website')
+    measurements = SiteAgencyMeasurementSerialiser(source="siteagencymeasurement_set", many=True)
 
     class Meta:
         model = SiteAgency
-        fields = ['agency_name', 'website', 'from_date', 'to_date']
+        fields = ['agency_name', 'website', 'from_date', 'to_date', 'measurements']
 
 
 class IdentifierTypeSerialiser(serializers.ModelSerializer):
