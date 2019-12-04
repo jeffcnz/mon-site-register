@@ -179,7 +179,7 @@ class InDateRangeFilter(BaseFilterBackend):
 class ValidParameterFilter(BaseFilterBackend):
     """
     Filter checks whether the requested parameters are defined.
-    If any arent then it returns an error.
+    If any aren't then it returns an error.
     """
 
 

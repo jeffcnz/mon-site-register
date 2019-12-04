@@ -83,10 +83,20 @@ class ObservedProperty(models.Model):
     def __str__(self):
         return self.observed_property_name
 
+
+class InterpolationType(models.Model):
+    interpolation_type_name = models.CharField(max_length=200, unique=True)
+    interpolation_type_url = models.CharField(max_length=400, null=True, blank=True)
+
+    def __str__(self):
+        return self.interpolation_type_name
+
+
 class AgencyMeasurement(models.Model):
     agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
     agency_measurement_name = models.CharField(max_length=200)
     measurement_description = models.CharField(max_length=500, null=True, blank=True)
+    interpolation_type = models.ForeignKey(InterpolationType, on_delete=models.CASCADE, null=True, blank=True)
     observed_property = models.ForeignKey(ObservedProperty, on_delete=models.CASCADE)
     # Add units, statistics, type of measurement
     class Meta:
