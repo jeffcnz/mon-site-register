@@ -49,6 +49,7 @@ class IdentifierType(models.Model):
 class Site(models.Model):
     site_name = models.CharField(max_length=200)
     location = models.PointField('site location', null=True, blank=True, srid=4326)
+    description = models.CharField(max_length=500, null=True, blank=True)
     identifiers = models.ManyToManyField(IdentifierType, null=True, through='SiteIdentifiers')
     agencies = models.ManyToManyField(Agency, null=True, through='SiteAgency')
     #operational_periods = models.ForeignKey('SiteOperation', null=True, on_delete=models.CASCADE, related_name='site_operating')
@@ -85,6 +86,7 @@ class ObservedProperty(models.Model):
 class AgencyMeasurement(models.Model):
     agency = models.ForeignKey(Agency, on_delete=models.CASCADE)
     agency_measurement_name = models.CharField(max_length=200)
+    measurement_description = models.CharField(max_length=500, null=True, blank=True)
     observed_property = models.ForeignKey(ObservedProperty, on_delete=models.CASCADE)
     # Add units, statistics, type of measurement
     class Meta:
@@ -100,8 +102,8 @@ class SiteAgencyMeasurement(models.Model):
     site_agency = models.ForeignKey(SiteAgency, on_delete=models.CASCADE)
     agency_measurement = models.ForeignKey(AgencyMeasurement, on_delete=models.CASCADE)
     result_url = models.CharField(max_length=400)
-    meas_from = models.DateTimeField('site agency measurement from date', null=True, blank=True)
-    meas_to = models.DateTimeField('site agency measurement to date', null=True, blank=True)
+    observed_from = models.DateTimeField('site agency measurement from date', null=True, blank=True)
+    observed_to = models.DateTimeField('site agency measurement to date', null=True, blank=True)
     class Meta:
         constraints = [
             models.UniqueConstraint(fields=['site_agency', 'agency_measurement'], name='unique site agency measurement')

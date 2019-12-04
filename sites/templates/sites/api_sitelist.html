@@ -50,13 +50,60 @@
             <div class="modal-dialog modal-dialog-centered" role="document">
               <div class="modal-content">
                 <div class="modal-header">
-                  <h4 class="modal-title" id="agencyModalTitle{{feature.id}}">ID {{feature.id}} - {{feature.properties.site_name}} - Operating Agencies</h4>
+                  <h4 class="modal-title" id="agencyModalTitle{{feature.id}}">ID {{feature.id}} - {{feature.properties.site_name}} - Operating Agencies and Measurements</h4>
                   <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                   </button>
                 </div>
                 <div class="modal-body">
-                  <table class="table">
+
+                  <h5>Operating Agencies and Measurements</h5>
+
+                    {% for a in feature.properties.site_agencies %}
+                    <div class="Agency" property=agent typeof=Organisation>
+                      <h4 property="name">
+                        <a property="mainEntityOfPage" typeof="URL" href="https://{{ a.agency.website }}">
+                          {{ a.agency_name }}
+                        </a>
+                      </h4>
+                      <p>
+                        {% if a.from_date %}
+                        Operated from <span property="startTime">{{ a.from_date }}</span>
+                        {% endif %}
+                        {% if a.to_date %}
+                         to <span property="endTime">{{ a.to_date }}</span>
+                        {% endif %}
+                      </p>
+                    </div>
+
+                    <table class="table">
+                      <tr>
+                        <th>Measurement</th>
+                        <th>Local Name</th>
+                        <th>Description</th>
+                        <th>From</th>
+                        <th>To</th>
+                      </tr>
+                      {% for m in a.measurements %}
+                      <tr>
+                        <td><a property="mainEntityOfPage" typeof="URL" href="https://{{ m.measurement_url }}">{{ m.measurement }}</a></td>
+                        <td>
+                          {{ m.agency_measurement_name }}
+                          <a href="https://{{ m.result_url }}"> - Latest Result</a>
+                        </td>
+                        <td>
+                          {% if m.measurement_description %}
+                            {{ m.measurement_description }}
+                          {% endif %}
+                        </td>
+                        <td property="startTime">{% if m.observed_from %}{{ m.observed_from }} {% endif %}</td>
+                        <td property="endTime">{% if m.observed_to %}{{ m.observed_to }} {% endif %}</td>
+                      </tr>
+                      {% endfor %}
+                    </table>
+                    {% endfor %}
+
+                  <!--table class="table">
                     <tr>
                       <th>Agency</th>
                       <th>From</th>
@@ -69,7 +116,8 @@
                       <td property="endTime">{{ a.to_date }}</td>
                     </tr>
                     {% endfor %}
-                  </table>
+                  </table-->
+
 
 
                 </div>
@@ -145,7 +193,13 @@
         <td property="name">{{ properties.site_name }}</td>
       </tr>
       <tr>
-        <td>Location</td>
+        <th>Description</th>
+        {% if properties.description %}
+        <td property="description">{{ properties.description }}</td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th>Location</th>
         <td property="GeoCoordinates">{{ geometry.coordinates }}</td>
       </tr>
     </table>
@@ -164,21 +218,52 @@
       {% endfor %}
     </table>
 
-    <h3>Operating Agencies</h3>
-    <table class="table">
-      <tr>
-        <th>Agency</th>
-        <th>From</th>
-        <th>To</th>
-      </tr>
+    <h3>Operating Agencies and Measurements</h3>
+
       {% for a in properties.site_agencies %}
-      <tr property=agent typeof=Organisation>
-        <td property="name"><a property="mainEntityOfPage" typeof="URL" href="https://{{ a.agency.website }}">{{ a.agency_name }}</a></td>
-        <td property="startTime">{{ a.from_date }}</td>
-        <td property="endTime">{{ a.to_date }}</td>
-      </tr>
+      <div class="Agency" property=agent typeof=Organisation>
+        <h4 property="name">
+          <a property="mainEntityOfPage" typeof="URL" href="https://{{ a.agency.website }}">
+            {{ a.agency_name }}
+          </a>
+        </h4>
+        <p>
+          {% if a.from_date %}
+          Operated from <span property="startTime">{{ a.from_date }}</span>
+          {% endif %}
+          {% if a.to_date %}
+           to <span property="endTime">{{ a.to_date }}</span>
+          {% endif %}
+        </p>
+      </div>
+
+      <table class="table">
+        <tr>
+          <th>Measurement</th>
+          <th>Local Name</th>
+          <th>Description</th>
+          <th>From</th>
+          <th>To</th>
+        </tr>
+        {% for m in a.measurements %}
+        <tr>
+          <td><a property="mainEntityOfPage" typeof="URL" href="https://{{ m.measurement_url }}">{{ m.measurement }}</a></td>
+          <td>
+            {{ m.agency_measurement_name }}
+            <a href="https://{{ m.result_url }}"> - Latest Result</a>
+          </td>
+          <td>
+            {% if m.measurement_description %}
+              {{ m.measurement_description }}
+            {% endif %}
+          </td>
+          <td property="startTime">{% if m.observed_from %}{{ m.observed_from }} {% endif %}</td>
+          <td property="endTime">{% if m.observed_to %}{{ m.observed_to }} {% endif %}</td>
+        </tr>
+        {% endfor %}
+      </table>
       {% endfor %}
-    </table>
+
   </div>
   {% endblock %}
 {% endif %}

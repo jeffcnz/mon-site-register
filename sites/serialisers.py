@@ -194,11 +194,13 @@ class AgencySerialiser(serializers.ModelSerializer):
 
 class SiteAgencyMeasurementSerialiser(serializers.ModelSerializer):
     measurement = serializers.CharField(source='agency_measurement.observed_property.observed_property_name')
+    agency_measurement_name = serializers.CharField(source='agency_measurement.agency_measurement_name')
+    measurement_description = serializers.CharField(source='agency_measurement.measurement_description')
     measurement_url = serializers.CharField(source='agency_measurement.observed_property.observed_property_url')
 
     class Meta:
         model = SiteAgencyMeasurement
-        fields = ['measurement', 'measurement_url', 'result_url', 'meas_from', 'meas_to']
+        fields = ['measurement', 'agency_measurement_name', 'measurement_description', 'measurement_url', 'result_url', 'observed_from', 'observed_to']
 
 
 class SiteAgencySerialiser(serializers.ModelSerializer):
@@ -239,7 +241,7 @@ class SitesSerializer(OGCGeoFeatureModelSerializer):
     class Meta:
         model = Site
         geo_field = 'location'
-        fields = ['id', 'site_name', 'location', 'site_identifiers', 'site_agencies']
+        fields = ['id', 'site_name', 'description', 'location', 'site_identifiers', 'site_agencies']
 
     # modified from https://codereview.stackexchange.com/questions/164616/django-rest-framework-manytomany-relationship-through-intermediate-model
     @transaction.atomic
