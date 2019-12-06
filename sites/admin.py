@@ -12,7 +12,7 @@ from sites.forms import GISEntryForm
 from .models import (Site, Agency, IdentifierType,
                     SiteAgency, SiteIdentifiers, ApiInfo,
                     ApiConformance, ApiCollections, SiteAgencyMeasurement,
-                    AgencyMeasurement, ObservedProperty)
+                    AgencyMeasurement, ObservedProperty, InterpolationType)
 
 #from leaflet.admin import LeafletGeoAdmin
 
@@ -77,10 +77,13 @@ class ApiInfoAdmin(admin.ModelAdmin):
 
     inlines = [ApiCollectionsInline, ApiConformanceInline]
 
+
 class AgencyMeasurementAdmin(admin.ModelAdmin):
     list_display = ['agency', 'observed_property', 'agency_measurement_name']
     list_filter = ['agency', 'observed_property']
     search_fields = ['observed_property', 'agency_measurement_name']
+
+
 
 admin.site.register(Site, SiteAdmin)
 admin.site.register(Agency)
@@ -89,6 +92,7 @@ admin.site.register(IdentifierType)
 #admin.site.register(SiteOperation)
 #admin.site.register(SiteIdentifiers)
 admin.site.register(ObservedProperty)
+admin.site.register(InterpolationType)
 admin.site.register(AgencyMeasurement, AgencyMeasurementAdmin)
 admin.site.register(SiteAgency, SiteAgencyAdmin)
 admin.site.register(ApiInfo, ApiInfoAdmin)

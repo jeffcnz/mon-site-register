@@ -197,10 +197,12 @@ class SiteAgencyMeasurementSerialiser(serializers.ModelSerializer):
     agency_measurement_name = serializers.CharField(source='agency_measurement.agency_measurement_name')
     measurement_description = serializers.CharField(source='agency_measurement.measurement_description')
     measurement_url = serializers.CharField(source='agency_measurement.observed_property.observed_property_url')
+    interpolation_type = serializers.CharField(source='agency_measurement.interpolation_type.interpolation_type_name')
+    interpolation_url = serializers.CharField(source='agency_measurement.interpolation_type.interpolation_type_url')
 
     class Meta:
         model = SiteAgencyMeasurement
-        fields = ['measurement', 'agency_measurement_name', 'measurement_description', 'measurement_url', 'result_url', 'observed_from', 'observed_to']
+        fields = ['measurement', 'agency_measurement_name', 'interpolation_type', 'interpolation_url', 'measurement_description', 'measurement_url', 'result_url', 'observed_from', 'observed_to']
 
 
 class SiteAgencySerialiser(serializers.ModelSerializer):

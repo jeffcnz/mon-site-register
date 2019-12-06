@@ -80,6 +80,7 @@
                       <tr>
                         <th>Measurement</th>
                         <th>Local Name</th>
+                        <th>Interpolation</th>
                         <th>Description</th>
                         <th>From</th>
                         <th>To</th>
@@ -90,6 +91,11 @@
                         <td>
                           {{ m.agency_measurement_name }}
                           <a href="https://{{ m.result_url }}"> - Latest Result</a>
+                        </td>
+                        <td>
+                          <a typeof="URL" href="{{ m.interpolation_url }}">
+                            {{ m.interpolation_type }}
+                          </a>
                         </td>
                         <td>
                           {% if m.measurement_description %}
@@ -241,16 +247,26 @@
         <tr>
           <th>Measurement</th>
           <th>Local Name</th>
+          <th>Interpolation</th>
           <th>Description</th>
           <th>From</th>
           <th>To</th>
         </tr>
         {% for m in a.measurements %}
         <tr>
-          <td><a property="mainEntityOfPage" typeof="URL" href="https://{{ m.measurement_url }}">{{ m.measurement }}</a></td>
+          <td>
+            <a property="mainEntityOfPage" typeof="URL" href="https://{{ m.measurement_url }}">
+              {{ m.measurement }}
+            </a>
+          </td>
           <td>
             {{ m.agency_measurement_name }}
             <a href="https://{{ m.result_url }}"> - Latest Result</a>
+          </td>
+          <td>
+            <a typeof="URL" href="{{ m.interpolation_url }}">
+              {{ m.interpolation_type }}
+            </a>
           </td>
           <td>
             {% if m.measurement_description %}
