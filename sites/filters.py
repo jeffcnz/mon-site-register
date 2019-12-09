@@ -2,8 +2,10 @@
 # Makes filter conform to OGC WFS3 requirements.
 
 from math import cos, pi
+from datetime import datetime
 
-from django.utils import dateparse
+from django.utils import dateparse, timezone
+#from django.utils.timezone import now
 from django.db.models import Q
 from django.core.exceptions import ImproperlyConfigured
 from django.contrib.gis.db import models
@@ -43,6 +45,55 @@ else:
 __all__ = [
     'InBBoxFilter'
 ]
+
+def date_range_split(date_range):
+    # Process a date string representing a ranges
+    try:
+        # Split the string on the /
+        rawdatetime1, rawdatetime2 = (n for n in date_range.split('/'))
+        # Handle empty values
+        if rawdatetime1 == "" or rawdatetime1 == "..":
+            #Blank start date provided so use very early date
+            datetime1 = dateparse.parse_datetime("1000-01-01T00:00:00Z")
+        else:
+            datetime1 = dateparse.parse_datetime(rawdatetime1)
+
+        if rawdatetime2 == "" or rawdatetime2 == "..":
+            #Blank end date provided so use now as the enddate
+            datetime2 = timezone.now()
+        else:
+            datetime2 = dateparse.parse_datetime(rawdatetime2)
+
+        # Return the values if they were valid and
+        # the second datetime was after the first
+        # Otherwise return an empty list
+        if datetime1 and datetime2 and datetime2 >= datetime1:
+            return [datetime1, datetime2]
+        else:
+            return []
+    except:
+        # There was an issue with the datetime string, return empty list
+        return []
+
+
+def date_process(date_str):
+    # Process a date string representing a single date
+    try:
+        datetime1 = dateparse.parse_datetime(date_str)
+        datetime2 = datetime1
+        return [datetime1, datetime2]
+    except:
+        return []
+
+
+def datestr_process(datestr):
+    # process the datestring, check whether it is a range or single value
+    if "/" in datestr:
+        # Process a date ranges
+        return date_range_split(date_range=datestr)
+    else:
+        # Process a single date
+        return date_process(date_str=datestr)
 
 
 class InBBoxFilter(BaseFilterBackend):
@@ -122,6 +173,65 @@ class InDateRangeFilter(BaseFilterBackend):
         daterange_string = request.query_params.get(self.daterange_param, None)
         if not daterange_string:
             return None
+        date_list = datestr_process(datestr=daterange_string)
+        if len(date_list) == 2:
+            return date_list
+        else:
+            #There was an issue with the string so raise an error
+            raise ParseError('Invalid datetime string supplied for parameter {0}'.format(self.daterange_param))
+
+
+    def filter_queryset(self, request, queryset, view):
+        # Function to filter the dataset on the timerange
+        # Process the given interval
+        daterange = self.get_filter_datetime(request)
+        print(daterange)
+        # If there isn't a datetime parameter given then return the unaltered data
+        if not daterange:
+            return queryset
+        # Identify where sites have no agencies
+        noagency = queryset.filter(agencies__isnull=True)
+        # Filter for the time interval.
+        # the to_date must be after the start date provided (or null)
+        queryset = queryset.filter(siteagency__to_date__gte=daterange[0]) | queryset.filter(siteagency__to_date__isnull=True)
+        # remove duplicates
+        queryset = queryset.distinct()
+        # AND the from_date date must be before the end date provided
+        queryset = queryset.filter(siteagency__from_date__lte=daterange[1])
+        # Join the results from the daterange filter with the sites with no agencies
+        queryset = queryset.union(noagency)
+        # return the queryset
+        return queryset
+
+
+class MeasurementDateRangeFilter(BaseFilterBackend):
+    """
+    Filter results by a date range given based on the agency date ranges in the
+    database.  Returns sites that were in use by an agency at some point in the
+    period specified, and sites with no agencies.
+    """
+    daterange_param = 'measurement_daterange'  # The URL query parameter which contains the bbox.
+
+    def get_filter_datetime(self, request):
+        # Helper function to process the datetime interval provided and
+        #make it useful for filtering.
+        daterange_string = request.query_params.get(self.daterange_param, None)
+        if not daterange_string:
+            return None
+        date_list = datestr_process(datestr=daterange_string)
+        if len(date_list) == 2:
+            return date_list
+        else:
+            #There was an issue with the string so raise an error
+            raise ParseError('Invalid datetime string supplied for parameter {0}'.format(self.daterange_param))
+
+    """
+    def get_filter_datetime(self, request):
+        # Helper function to process the datetime interval provided and
+        #make it useful for filtering.
+        daterange_string = request.query_params.get(self.daterange_param, None)
+        if not daterange_string:
+            return None
 
         try:
             # Split the string on the /
@@ -133,7 +243,7 @@ class InDateRangeFilter(BaseFilterBackend):
             else:
                 datetime1 = dateparse.parse_datetime(datetime1)
 
-            if datetime2 == "" or datetime1 == "..":
+            if datetime2 == "" or datetime2 == "..":
                 #Blank end date provided so use start datetime
                 datetime2 = dateparse.parse_datetime(datetime1)
             else:
@@ -154,6 +264,7 @@ class InDateRangeFilter(BaseFilterBackend):
             raise ParseError('Invalid datetime string supplied for parameter {0}'.format(self.daterange_param))
 
         #return x
+        """
 
     def filter_queryset(self, request, queryset, view):
         # Function to filter the dataset on the timerange
@@ -164,15 +275,18 @@ class InDateRangeFilter(BaseFilterBackend):
             return queryset
         # Identify where sites have no agencies
         noagency = queryset.filter(agencies__isnull=True)
+
+        nomeasurement = queryset.filter(siteagency__siteagencymeasurement__isnull=True)
         # Filter for the time interval.
         # the to_date must be after the start date provided (or null)
-        queryset = queryset.filter(siteagency__to_date__gte=daterange[0]) | queryset.filter(siteagency__to_date__isnull=True)
+        queryset = queryset.filter(siteagency__siteagencymeasurement__observed_to__gte=daterange[0]) | queryset.filter(siteagency__siteagencymeasurement__observed_to__isnull=True)
         # remove duplicates
         queryset = queryset.distinct()
         # AND the from_date date must be before the end date provided
-        queryset = queryset.filter(siteagency__from_date__lte=daterange[1])
+        queryset = queryset.filter(siteagency__siteagencymeasurement__observed_from__lte=daterange[1])# | queryset.filter(siteagency__siteagencymeasurement__observed_from__isnull=True)
         # Join the results from the daterange filter with the sites with no agencies
-        queryset = queryset.union(noagency)
+        #queryset = queryset.union(noagency)
+        #queryset = queryset.union(nomeasurement)
         # return the queryset
         return queryset
 
@@ -184,7 +298,7 @@ class ValidParameterFilter(BaseFilterBackend):
 
 
     def filter_queryset(self,request, queryset, view):
-        valid_params = ['bbox', 'name', 'agency', 'datetime', 'limit', 'offset', 'format']
+        valid_params = ['bbox', 'name', 'agency', 'datetime', 'limit', 'offset', 'format', 'measurement_daterange']
         requested_parameters = request.query_params
         #print(requested_parameters)
         if all(param in valid_params for param in requested_parameters):

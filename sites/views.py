@@ -15,7 +15,7 @@ from rest_framework import permissions
 
 from django.contrib.gis.db.models import Extent
 #from rest_framework_gis.filters import InBBoxFilter
-from .filters import InBBoxFilter, SiteFilter, InDateRangeFilter, ValidParameterFilter
+from .filters import InBBoxFilter, SiteFilter, InDateRangeFilter, ValidParameterFilter, MeasurementDateRangeFilter
 
 from django_filters import rest_framework as filters
 
@@ -72,7 +72,7 @@ class SitesViewSetApi(custom_viewsets.NoDeleteViewset):
     #pagination_class = LimitOffsetPagination
     pagination_class = OGCFeaturesPagination
     bbox_filter_field = 'location'
-    filter_backends = (InBBoxFilter, filters.DjangoFilterBackend, InDateRangeFilter, ValidParameterFilter)
+    filter_backends = (InBBoxFilter, filters.DjangoFilterBackend, InDateRangeFilter, ValidParameterFilter, MeasurementDateRangeFilter)
     filterset_class = SiteFilter
 
 
