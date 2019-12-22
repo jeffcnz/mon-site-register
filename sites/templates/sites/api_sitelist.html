@@ -62,7 +62,7 @@
                     {% for a in feature.properties.site_agencies %}
                     <div class="Agency" property=agent typeof=Organisation>
                       <h4 property="name">
-                        <a property="mainEntityOfPage" typeof="URL" href="https://{{ a.agency.website }}">
+                        <a property="mainEntityOfPage" typeof="URL" href="{{ a.agency.website }}">
                           {{ a.agency_name }}
                         </a>
                       </h4>
@@ -87,10 +87,10 @@
                       </tr>
                       {% for m in a.measurements %}
                       <tr>
-                        <td><a property="mainEntityOfPage" typeof="URL" href="https://{{ m.measurement_url }}">{{ m.measurement }}</a></td>
+                        <td><a property="mainEntityOfPage" typeof="URL" href="{{ m.measurement_url }}">{{ m.measurement }}</a></td>
                         <td>
                           {{ m.agency_measurement_name }}
-                          <a href="https://{{ m.result_url }}"> - Latest Result</a>
+                          <a href="{{ m.result_url }}"> - Latest Result</a>
                         </td>
                         <td>
                           <a typeof="URL" href="{{ m.interpolation_url }}">
@@ -229,7 +229,7 @@
       {% for a in properties.site_agencies %}
       <div class="Agency" property=agent typeof=Organisation>
         <h4 property="name">
-          <a property="mainEntityOfPage" typeof="URL" href="https://{{ a.agency.website }}">
+          <a property="mainEntityOfPage" typeof="URL" href="{{ a.agency.website }}">
             {{ a.agency_name }}
           </a>
         </h4>
@@ -255,13 +255,13 @@
         {% for m in a.measurements %}
         <tr>
           <td>
-            <a property="mainEntityOfPage" typeof="URL" href="https://{{ m.measurement_url }}">
+            <a property="mainEntityOfPage" typeof="URL" href="{{ m.measurement_url }}">
               {{ m.measurement }}
             </a>
           </td>
           <td>
             {{ m.agency_measurement_name }}
-            <a href="https://{{ m.result_url }}"> - Latest Result</a>
+            <a href="{{ m.result_url }}"> - Latest Result</a>
           </td>
           <td>
             <a typeof="URL" href="{{ m.interpolation_url }}">
